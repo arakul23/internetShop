@@ -1,0 +1,21 @@
+#submitCategory {
+    font: bold 14px Arial;
+    color: white;
+}
+
+.categoryList form {
+    float: left;
+    padding: 20px;
+}
+
+.button-order {
+    height: 35px;
+
+}
+
+.form-order {
+    position: relative;
+    height: 10px;
+}
+
+
