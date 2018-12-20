@@ -9,6 +9,9 @@ use App\category;
 use App\images;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use App\properties;
+use App\orders;
+use App\ordersItems;
 
 
 class addOperationController extends Controller
@@ -54,13 +57,7 @@ class addOperationController extends Controller
     }
 
 
-    public function deleteCategory(Request $request)
-    {
-        $category = category::all()->where("id", $request->productId)->first();
-        $category->delete();
-        return redirect('add');
-
-    }
+  
 
     public function addPostOffice(Request $request)
     {
@@ -74,6 +71,73 @@ class addOperationController extends Controller
         $postOffice->save();
         return redirect('add');
 
+
+    }
+
+    public function addCharacteristic(Request $request){
+        $properties = new properties();
+        $properties->name = $request->characteristicName;
+        $properties->save();
+
+    }
+
+     public function addOrder(Request $request){
+        $orders = new orders();
+        $itemsOrders = new ordersItems();
+        $session = $request->session();
+
+    $cartProd = $session->get('product'); 
+    $fullPrice = $session->get('fullPrice');
+    $name = $request->userName;
+    $phoneNumber = $request->userPhoneNumber;
+    $delivery = $request->delivery;
+
+$orders->name = $name;
+$orders->phoneNumber = $phoneNumber;
+$orders->fullPrice = $fullPrice;
+$orders->delivery = $delivery;
+$orders->save();
+$orderId = DB::getPdo()->lastInsertId();
+foreach($cartProd as $cp){
+$itemsOrders->insert(['order_id' => $orderId, 'item_id' => $cp['id'], 'quantity' => $cp['quantity']]);
+
+}
+
+
+    }
+
+    public function addOrder(Request $request){
+        $orders = new orders();
+        $itemsOrders = new ordersItems();
+        $session = $request->session();
+
+    $cartProd = $session->get('product'); 
+    $fullPrice = $session->get('fullPrice');
+    $name = $request->userName;
+    $phoneNumber = $request->userPhoneNumber;
+    $delivery = $request->delivery;
+
+$orders->name = $name;
+$orders->phoneNumber = $phoneNumber;
+$orders->fullPrice = $fullPrice;
+$orders->delivery = $delivery;
+$orders->save();
+
+// Добавление в item_orders
+$orderId = DB::getPdo()->lastInsertId();
+foreach($cartProd as $cp){
+$itemsOrders->insert(['order_id' => $orderId, 'item_id' => $cp['id'], 'quantity' => $cp['quantity']]);
+
+}
+
+
+    }
+
+      public function deleteCategory(Request $request)
+    {
+        $category = category::all()->where("id", $request->productId)->first();
+        $category->delete();
+        return redirect('add');
 
     }
 

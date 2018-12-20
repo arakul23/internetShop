@@ -37,7 +37,7 @@ Route::get('/singleProduct', function (Request $request) {
     $prod = new getInfoController();
     $prodArr = array(array('id' => $request->idVal));
     $product = $prod->getProductFull($prodArr);
-    return view('single-product', compact('product','char'));
+    return view('single-product', compact('product'));
 });
 
 Route::get('/checkout', function () {
@@ -66,18 +66,12 @@ Route::post('/addToCart', "AjaxController@addProduct");
 Route::post('/getIdArray', "getInfoController@getIdArray");
 Route::post('/deleteFromCart', "AjaxController@deleteFromCart");
 Route::post('/addPostOffice', "addOperationController@addPostOffice");
-
-
+Route::post('/addCharacteristic', "addOperationController@addCharacteristic");
+Route::post('/addOrder', "addOperationController@addOrder");
 Route::get('/cartProduct', 'getInfoController@getCartProduct');
 
 
-Route::get("/ordering", function () {
-
-    $postOffice = new getInfoController();
-    $listOffice = $postOffice->getPostOffice();
-    return view("ordering", compact("listOffice"));
-
-});
+Route::post('/ordering', 'getInfoController@getFullOrderInfo');
 
 Route::post('/postOfficeMap', "getInfoController@getPostOffice");
 Route::post('/postOfficeForMap', "getInfoController@getPostOfficeForMap");

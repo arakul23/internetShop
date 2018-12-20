@@ -107,6 +107,16 @@
     </form>
 
 
+ <form action={{url('/addCharacteristic')}} method="post" class="col-lg-3" id="formAddPost">
+        <label><h3>Добавить характеристику</h3></label>
+        <label for="characteristicName">Название характеристики</label>
+        <input id="characteristicName" name="characteristicName" class="form-control input-sm" required>
+
+        <input type="submit" value="Добавить характеристику" class="btn btn-primary">
+
+        {!! csrf_field() !!}
+    </form>
+
 </div>
 </body>
 @stop

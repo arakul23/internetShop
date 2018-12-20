@@ -34,12 +34,43 @@
   </head>
   <body>
 
-@foreach($product as $prod)
-    <h3>{{$prod[0]->name}}</h3>
-    <h3><img src = "{{$prod[0]->image}}"></h3>
- <p>{{$prod[0]->description}}></p>
 
+<div class = "container">
+    <div class = "row">
+        <div class = "col-lg-8">
+@foreach($product[0] as $prod)
+    <label>{{$prod[0]->name}}</label>
+
+    <h3><img src = "{{$prod[0]->image}}"></h3>
+    <label>Описание</label>
+ <p>{{$prod[0]->description}}></p>
+<div class = "addCartButton">
+  <button type="button" onclick="addProductInCart(this)">Добавить в корзину</button>
+                <input type="hidden" name="idVal" value="{{$prod[0]->id}}">
+                                <input type="hidden" name="priceVal" value="{{$prod[0]->price}}">
+
+                                {{ csrf_field() }}
+
+                
+</div>
     @endforeach
+
+</div>
+
+ <div class = "col-lg-4">
+
+<div id = "singleProdProperties">
+    <label>Характеристики</label>
+@foreach($product[1]['properties'] as $prod)
+    <h4>{{$prod['name']}}:{{$prod['value']}}</h4>
+    @endforeach
+</div>
+</div>
+ </div>
+</div>
+
+
+
    
     <!-- Latest jQuery form server -->
     <script src="https://code.jquery.com/jquery.min.js"></script>

@@ -1,3 +1,6 @@
+<html>
+<head>
+
 <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
@@ -17,8 +20,8 @@
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]-->
-
-
+</head>
+<body>
 <div class="site-branding-area">
     <div class="container">
         <div class="row">
@@ -43,13 +46,7 @@
                         <span class="product-count"
                               id="product-count">@if((session("fullCountProd"))) {{session("fullCountProd")}} @else {{0}}@endif</span></a>
 
-                    <div>
-                        @if((Request::url() === "http://shop/public/cartProduct")&&(!empty(session("product"))))
-                            <form action={{url("ordering")}} class="form-order">
-                                <button type="submit" class="button-order"><h5>Оформить заказ</h5></button>
-                            </form>
-                        @endif
-                    </div>
+                   
                     <div>
 
                     </div>
@@ -59,7 +56,11 @@
                             <form action="{{url('clearCart')}}">
                                 <button type="submit"><h5>Очистить корзину</h5></button>
                             </form>
+                            <form action={{url("ordering")}} method = 'post' class="form-order">
+                                <button type="submit" class="button-order"><h5>Оформить заказ</h5></button>
+                                                         {{ csrf_field() }}
 
+                            </form>
                         @endif
                     </div>
 
@@ -105,5 +106,6 @@
 <script src="../../public/js/jquery-3.0.0.min.js"></script>
 <script src="../../../public/js/handler.js"></script>
 <script src="../../../public/js/googleMap.js"></script>
-
+</body>
+</html>
 @yield('content')

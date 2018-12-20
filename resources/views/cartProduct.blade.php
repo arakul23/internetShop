@@ -6,14 +6,14 @@
             size: 29px;
         }
     </style>
-    @if(!isset($fullProdInfo))
+    @if(!isset($product))
         Корзина пуста
 
     @else
         <div class="container">
 
-            @foreach ($fullProdInfo as $prod)
-{{$prod}}
+            @foreach ($product as $prod)
+
                 <form class="col-lg-4 productCart">
                     <button type="button" class="close" aria-label="Close" onclick="deleteFromCart(this)">
                         <span aria-hidden="true" style="color: #ff0a33" class="closeBtn">&times;</span>
