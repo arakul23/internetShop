@@ -84,8 +84,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href={{url("/shop")}}>Товары со скидкой</a></li>
-                    <li><a href={{url("/cart")}}>Cart</a></li>
+                    <li><a href={{url("/discounts")}}>Товары со скидкой</a></li>
                     <li><a href={{url("/category")}}>Категории</a></li>
                     @if(!Auth::user())
 
@@ -101,9 +100,10 @@
         </div>
     </div>
 </div> <!-- End mainmenu area -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<script src="../../public/js/jquery-3.0.0.min.js"></script>
 <script src="../../../public/js/handler.js"></script>
 <script src="../../../public/js/googleMap.js"></script>
 </body>

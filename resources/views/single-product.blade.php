@@ -34,20 +34,23 @@
   </head>
   <body>
 
-
 <div class = "container">
     <div class = "row">
         <div class = "col-lg-8">
 @foreach($product[0] as $prod)
-    <label>{{$prod[0]->name}}</label>
 
-    <h3><img src = "{{$prod[0]->image}}"></h3>
+    <label>{{$prod->name}}</label>
+
+@if(isset($prod->image))
+    <h3><img src = "{{$prod->image}}"></h3>
+    @endif
+    <p>Производитель: {{$prod->brand}}</p><br>
     <label>Описание</label>
- <p>{{$prod[0]->description}}></p>
+ <p>{{$prod->description}}</p>
 <div class = "addCartButton">
   <button type="button" onclick="addProductInCart(this)">Добавить в корзину</button>
-                <input type="hidden" name="idVal" value="{{$prod[0]->id}}">
-                                <input type="hidden" name="priceVal" value="{{$prod[0]->price}}">
+                <input type="hidden" name="idVal" value="{{$prod->id}}">
+                                <input type="hidden" name="priceVal" value="{{$prod->price}}">
 
                                 {{ csrf_field() }}
 

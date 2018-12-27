@@ -16,6 +16,12 @@
         text-indent: -9999px;
     }
 </style>
+<form action = "{{url('/filter')}}">
+@foreach($brand as $br)
+<input type = "checkbox"  id = "brand{{$br->id}}" name = "brandFilter[]" value = "{{$br->id}}"><label for = "brand{{$br->id}}">{{$br->name}}</label>
+@endforeach
+<input type = "submit" value = "Применить">
+</form> 
 <div class="container">
     @foreach($product as $p)
         <form action="{{url('/singleProduct')}}" class="product-form">
@@ -24,7 +30,11 @@
                 @if(isset($p->image))
                 <img src="{{$p->image}}" width="200" height="200"><br>
                 @endif
-                <h3>{{$p->price}}</h3>
+            @if(isset($p->oldPrice))
+                
+                <h3><del>{{$p->oldPrice}} грн.</del></h3>
+                                @endif
+        <h3> {{$p->price}} грн.</h3>
                 <button type="button" onclick="addProductInCart(this)">Добавить в корзину</button>
                 <input type="hidden" name="idVal" value="{{$p->id}}">
                 <input type="hidden" name="priceVal" value="{{$p->price}}">
@@ -38,6 +48,7 @@
 
         </form>
     @endforeach
+  {{ $product->appends(['categoryId' => $category])->links() }}
 </div>
 
 </body>

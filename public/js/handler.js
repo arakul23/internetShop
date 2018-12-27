@@ -13,20 +13,6 @@ function validateCategoryName() {
 }
 
 
-function getIdArray(token) {
-    $.ajax({
-        dataType: "json",
-        type: "POST",
-        url: "getIdArray",
-        data: {"_token": token},
-        success: function (result) {
-            console.log(result);
-            return result;
-        }
-    });
-}
-
-
 function addProductInCart(self) {
 
     var token = $("input[name=_token]").val();
@@ -41,7 +27,7 @@ function addProductInCart(self) {
         success: function (result) {
             var array = JSON.parse(result);
             $("#product-count").html(array[1]);
-            $("#product-price").html(array[0]);
+            $("#product-price").html(array[0].toFixed(2));
 
         }
     });
@@ -71,5 +57,54 @@ function deleteFromCart(self) {
 
 }
 
+
+function showEditProductForm(self){
+    let token = $("input[name=_token]").val();
+    let idProduct = $(self).parent().find("[name='idProduct']").val();
+    let result = null;
+   $("#idProductEdit").val(idProduct);
+   $("#editProduct").show('slow');
+ $.ajax({
+        type: "POST",
+        url: "getProductInfo",
+        data: {"_token": token, "idProduct": idProduct},
+        success: function (result) {
+            result = JSON.parse(result);
+            $("#prodNameEdit").val(result[0].name);
+            $("#prodPriceEdit").val(result[0].price);
+            $("#prodCategoryEdit").val(result[0].category);
+            $("#descriptionProdEdit").val(result[0].description);
+            $("#imageEdit").attr('src',result[0].image);
+            $("html, body").animate({ scrollTop: 0 }, "fast");
+        }
+    });
+
+}
+
+
+
+function showEditBrandForm(self){
+    let token = $("input[name=_token]").val();
+    let idBrand = $(self).parent().find("[name='idBrand']").val();
+    let result = null;
+   $("#idBrandEdit").val(idBrand);
+   $("#editBrand").show('slow');
+ $.ajax({
+        type: "POST",
+        url: "getBrandInfo",
+        data: {"_token": token, "idBrand": idBrand},
+        success: function (result) {
+            result = JSON.parse(result);
+            $("#brandNameEdit").val(result[0].name);
+            $("html, body").animate({ scrollTop: 0 }, "fast");
+        }
+    });
+
+}
+
+function addPropertySelect(){
+
+    $("#propertiesNames").clone().prependTo("addProperty");
+}
 
 

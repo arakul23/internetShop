@@ -16,19 +16,13 @@ use Illuminate\Support\Facades\DB;
 class bdController extends Controller
 {
 
-    public function deleteProduct(Request $request)
-    {
-        $product = DB::table('product')->where("id", $request->productId)->delete();
-        return redirect()->route('add');
-    }
-
-
 
     public function clearCart(Request $request)
     {
       $request->session()->put('product', null);
       $request->session()->put('fullPrice', null);
       $request->session()->put('fullCountProd', null);
+      return redirect()->back();
     }
 
 }
