@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+//TODO Реализовать фильтр для разных категорий товаров
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
@@ -38,8 +38,9 @@ class getInfoController extends Controller
         $product = DB::table('product')->where("category", $category)->paginate(20);
         $product = $this->mergeAttributesProduct($product);
         $brand = $this->getBrand();
+        $filter = DB::table('properties')->where('category', $category)->get();
 
-        return view('product', compact('product','category','brand'));
+        return view('product', compact('product','category','brand', 'filter'));
 
     }
 

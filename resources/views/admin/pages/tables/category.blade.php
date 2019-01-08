@@ -65,21 +65,23 @@
                     <div class="box">
 
                         <div class="box-header">
-                            <h3 class="box-title">Характеристики</h3>
+                            <h3 class="box-title">Категории</h3>
                         </div>
-                        <form action={{url('/addCharacteristic')}} method="post" class="col-lg-4 pull-left"
+                        <form action={{url('/addCategory')}} method="post" class="col-lg-4 pull-left"
                               id="formAddPost">
-                            <label><h3>Добавить характеристику</h3></label>
-                            <label for="characteristicName">Название характеристики</label>
-                            <input id="characteristicName" name="characteristicName" class="form-control input-sm"
+                            <label><h3>Добавить категорию</h3></label>
+                            <label for="categoryName">Название категории</label>
+                            <input id="categoryName" name="categoryName" class="form-control input-sm"
                                    required>
-                            <label for="categoryProperty">Категория</label>
-                            <select name="categoryProperty" class = "form-control">
+                            <label for="parentCategoryName">Родительская категория</label>
+                            <select name="parentCategoryName" class = "form-control">
+                                <option value="no">Нет</option>
                                 @foreach($category as $cat)
                                     <option value="{{$cat->id}}">{{$cat->name}}</option>
                                 @endforeach
                             </select>
-                            <input type="submit" value="Добавить характеристику" class="btn btn-primary"
+
+                            <input type="submit" value="Добавить" class="btn btn-primary"
                                    style="margin-top:20px">
 
                             {!! csrf_field() !!}
@@ -95,11 +97,11 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($properties as $prop)
+                                @foreach($category as $cat)
                                     <tr>
-                                        <td>{{$prop->id}}</td>
-                                        <td>{{$prop->name}}</td>
-                                        <input type="hidden" id="idProperty" value="{{$prop->id}}">
+                                        <td>{{$cat->id}}</td>
+                                        <td>{{$cat->name}}</td>
+                                        <input type="hidden" id="idCategory" value="{{$cat->id}}">
                                     </tr>
                                 @endforeach
                             </table>

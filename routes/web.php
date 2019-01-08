@@ -18,8 +18,6 @@ Route::get('/cart', function () {
 });
 
 
-
-
 Route::get('/data', function () {
     return view('admin/pages/tables/data');
 });
@@ -52,7 +50,6 @@ Route::get('/logout', function () {
 });
 
 
-
 Route::get('/singleProduct', function (Request $request) {
     $prod = new getInfoController();
     $prodArr = array(array('id' => $request->idVal));
@@ -73,10 +70,10 @@ Route::get('/category', function () {
 Route::get('/admin', function () {
 
     return view('admin/index');
-    
+
 })->name("admin");
 
-Route::get('/discounts', function(){
+Route::get('/discounts', function () {
     $discounts = new getInfoController();
     $product = $discounts->getDiscounts();
     return view('discounts', compact('product'));
@@ -91,7 +88,7 @@ Route::get('/adminDiscounts', function () {
     $category = $obj->getCategory();
     foreach ($discounts as $disc) {
         foreach ($category as $cat) {
-            if($disc->category === $cat->id){
+            if ($disc->category === $cat->id) {
                 $disc->categoryName = $cat->name;
             }
         }
@@ -112,9 +109,16 @@ Route::get('/adminProduct', function () {
 
 Route::get('/adminProperties', function () {
     $obj = new getInfoController();
-
+    $category = $obj->getCategory();
     $properties = $obj->getProperties();
-    return view('admin/pages/tables/properties', compact('properties'));
+    return view('admin/pages/tables/properties', compact('properties', 'category'));
+});
+
+
+Route::get('/adminCategory', function () {
+    $obj = new getInfoController();
+    $category = $obj->getCategory();
+    return view('admin/pages/tables/category', compact( 'category'));
 });
 
 Route::get('/adminBrand', function () {
@@ -142,6 +146,8 @@ Route::post('/addPostOffice', "addOperationController@addPostOffice");
 Route::post('/addCharacteristic', "addOperationController@addCharacteristic");
 Route::post('/addOrder', "addOperationController@addOrder");
 Route::post('/addDiscount', "addOperationController@addDiscount");
+Route::post('/addCategory', "addOperationController@addCategory");
+
 Route::post('/editProd', "editController@editProduct");
 Route::post('/editBrand', "editController@editBrand");
 Route::get('/cartProduct', 'getInfoController@getCartProduct');

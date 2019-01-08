@@ -15,29 +15,6 @@
         @endforeach
         </div>
 </div>
-<div class="col-lg-2 pull-left">
-<nav id="menuVertical" class="form-control">
-    <ul>
-            @foreach($category as $c)
-@if($c->parent_id == 0)
 
-        <li class="form-control"><a href="#m1">{{$c->name}}</a>
-        @endif
-        <ul>
-@foreach($category as $cat)
-@if($cat->parent_id == $c->id)
-
-                <li class = "form-control"><a href="#m3_1">{{$cat->name}}</a></li>
-              
-           
-            @endif
-@endforeach
- </ul>
-    </li>
-        @endforeach
-    
-</nav><!--menuVertical-->
-
-</div>
 
 @stop

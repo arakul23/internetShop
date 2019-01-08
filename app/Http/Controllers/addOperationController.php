@@ -21,18 +21,16 @@ class addOperationController extends Controller
 {
     public function addCategory(Request $request)
     {
-        $this->validate($request, [
-            'categoryName' => 'required||min:5',
-        ]);
+
 
         $category = new category();
         $category->name = $request->categoryName;
-        if($request->parentCategory === 'Нет')
+        if($request->parentCategoryName === 'no')
         $category->parent_id = 0;
         else
-          $category->parent_id = $request->parentCategory;
+          $category->parent_id = $request->parentCategoryName;
         $category->save();
-        return redirect('add');
+        return redirect('adminCategory');
     }
 
     public function addProduct(Request $request)
@@ -101,9 +99,14 @@ class addOperationController extends Controller
     public function addCharacteristic(Request $request){
         $properties = new properties();
         $properties->name = $request->characteristicName;
+        $properties->category = $request->categoryProperty;
         $properties->save();
-
+        return redirect('adminProperties');
     }
+
+
+
+
 
     public function addBrand(Request $request){
         $brand = new brand();

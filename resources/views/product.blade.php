@@ -16,13 +16,19 @@
         text-indent: -9999px;
     }
 </style>
-<form action = "{{url('/filter')}}">
-@foreach($brand as $br)
-<input type = "checkbox"  id = "brand{{$br->id}}" name = "brandFilter[]" value = "{{$br->id}}"><label for = "brand{{$br->id}}">{{$br->name}}</label>
-@endforeach
-<input type = "submit" value = "Применить">
-</form> 
-<div class="container">
+
+    <div class = "col-lg-3">
+    @if(count($filter) > 0)
+        <form action = "{{url('/filter')}}">
+            @foreach($filter as $filt)
+             <input type = "checkbox"  value="{{$filt->name}}">{{$filt->name}}
+            @endforeach
+            <br>
+            <input type = "submit" value = "Применить">
+        </form>
+    @endif
+    </div>
+    <div class = "col-lg-9">
     @foreach($product as $p)
         <form action="{{url('/singleProduct')}}" class="product-form">
             <div class="col-lg-4 product">
@@ -48,8 +54,8 @@
 
         </form>
     @endforeach
+    </div>
   {{ $product->appends(['categoryId' => $category])->links() }}
-</div>
 
 </body>
 @endsection
