@@ -36,6 +36,7 @@ class getInfoController extends Controller
 
         $category = $request->categoryId;
         $product = DB::table('product')->where("category", $category)->paginate(20);
+
         $product = $this->mergeAttributesProduct($product);
         $brand = $this->getBrand();
         $filter = DB::table('properties')->where('category', $category)->get();
@@ -54,10 +55,11 @@ class getInfoController extends Controller
   } 
 
 
-
+// При мёрже атрибутов в случае с категориями приходит объект, а в случае с корзиной - массив. Потому в методах мёржа надо разграничить по условиям
     public function mergeImage($product){
     $images = $this->getImages();
-
+echo gettype($product);
+die();
     foreach ($product as $prod) {
             foreach ($images as $image) {
                 if(isset($prod->id_product)){
@@ -236,24 +238,30 @@ public function getCartProduct(Request $post){
     $productArr = session("product");
 }
 
-$getProduct = new getInfoController();
+ foreach ($productArr as $array) {
+            $product[] = DB::table('product')->select("id", "name", "price", 'description', 'brand')->where("id", $array['id'])->get();
+    
 
-$fullProdInfo = $getProduct->getProductFull($productArr);
-$product = $fullProdInfo[0];
+        }
+
+
+        $product = $this->mergeAttributesProduct($product);
 
 foreach ($product as $prod) {
  
 
-    foreach ($post->session()->get('product') as $sessionProd) {
+   foreach ($post->session()->get('product') as $sessionProd) {
 
-     if ($prod->id == $sessionProd['id']) {
-         $prod->quantity = $sessionProd['quantity'];
+     if ($prod[0]->id == $sessionProd['id']) {
+         $prod[0]->quantity = $sessionProd['quantity'];
      }
- }
  
-}
+ 
+
 
 return view('cartProduct', compact("product", "countOfProd"));
+}
+}
 }
 
 
