@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\getInfoController;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\Controllers\bdController;
 class AjaxController extends getInfoController
 {
 
@@ -54,7 +54,7 @@ class AjaxController extends getInfoController
 
   public  function deleteFromCart(Request $post)
     {
-        echo count($post->session()->get('product'));
+        $obj = new bdController();
         $session = $post->session();
         for ($i = 0; $i < count($post->session()->get('product')); $i++) {
 
@@ -68,11 +68,17 @@ class AjaxController extends getInfoController
             }
         }
         $session->put('fullCountProd', $session->get('fullCountProd') - 1);
-        if ($session->get('product') > 0)
+        if ($session->get('product') > 0){
             $session->put('product', array_values($session->get('product')));
+        }
 
+      
         $prodArr = array('fullCountProd' => $session->get('fullCountProd'), 'fullPrice' => $session->get('fullPrice'));
-        $session->get('product', null);
+
+        if($session->get('product') == null){
+            $obj->clearCart($post);
+        }
+
         $json = json_encode($prodArr);
         echo $json;
     }
