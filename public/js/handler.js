@@ -19,7 +19,6 @@ function addProductInCart(self) {
 
     var id = $(self).parent().find('[name="idVal"]').val();
     var price = $(self).parent().find('[name="priceVal"]').val();
-
     $.ajax({
         type: "POST",
         url: "addToCart",
@@ -59,9 +58,9 @@ function deleteFromCart(self) {
 
 
 function showEditProductForm(self){
-    let token = $("input[name=_token]").val();
-    let idProduct = $(self).parent().find("[name='idProduct']").val();
-    let result = null;
+    var token = $("input[name=_token]").val();
+    var idProduct = $(self).parent().find("[name='idProduct']").val();
+    var result = null;
    $("#idProductEdit").val(idProduct);
    $("#editProduct").show('slow');
  $.ajax({
@@ -84,9 +83,9 @@ function showEditProductForm(self){
 
 
 function showEditBrandForm(self){
-    let token = $("input[name=_token]").val();
-    let idBrand = $(self).parent().find("[name='idBrand']").val();
-    let result = null;
+    var token = $("input[name=_token]").val();
+    var idBrand = $(self).parent().find("[name='idBrand']").val();
+    var result = null;
    $("#idBrandEdit").val(idBrand);
    $("#editBrand").show('slow');
  $.ajax({

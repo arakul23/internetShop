@@ -1,3 +1,4 @@
+
 @extends('layouts.menu')
 @section('content')
 
@@ -11,7 +12,6 @@
 
 @else
 <div class="container">
-
     @foreach ($product as $prod)
 
     <form class="col-lg-4 productCart">

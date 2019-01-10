@@ -29,6 +29,7 @@ class AjaxController extends Controller
         $post->session()->put('fullPrice', $post->session()->get('fullPrice') + intval($fullPrice));
         $post->session()->put('fullCountProd', $post->session()->get('fullCountProd') + $quantity);
         if ($post->session()->has('product')) {
+
             $count = count($post->session()->get('product'));
             for ($i = 0; $i < $count; $i++) {
                 if ($post->session()->get('product')[$i]['id'] === $id) {
@@ -39,7 +40,9 @@ class AjaxController extends Controller
                 }
 
 
+
             }
+
         } else {
             $post->session()->put('product', array());
             $post->session()->push('product', $prodArr);

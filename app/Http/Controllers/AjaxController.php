@@ -14,7 +14,7 @@ class AjaxController extends getInfoController
 
 
 
-   public function addProduct(Request $post)
+    function addProduct(Request $post)
     {
         $quantity = 1;
         $price = $post->input("price");
@@ -22,7 +22,7 @@ class AjaxController extends getInfoController
         $id = $post->input("idProd");
         $fullPrice = $quantity * $price;
         $prodArr = array('id' => $id, 'quantity' => $quantity, 'price' => $price);
-        $post->session()->put('fullPrice', round(doubleval($post->session()->get('fullPrice'))) + round(doubleval($fullPrice), 2));
+        $post->session()->put('fullPrice', $post->session()->get('fullPrice') + intval($fullPrice));
         $post->session()->put('fullCountProd', $post->session()->get('fullCountProd') + $quantity);
         if ($post->session()->has('product')) {
             $count = count($post->session()->get('product'));
