@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <div class="searchProducts">
-            @foreach($result as $prod)
+            @foreach($product as $prod)
                 <div class="col-lg-3">
                     <p style="text-align: center">{{$prod->name}}</p>
                     @if(isset($prod->image))

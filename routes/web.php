@@ -50,12 +50,8 @@ Route::get('/logout', function () {
 });
 
 
-Route::get('/singleProduct', function (Request $request) {
-    $prod = new getInfoController();
-    $prodArr = array(array('id' => $request->idVal));
-    $product = $prod->getProductFull($prodArr);
-    return view('single-product', compact('product'));
-});
+
+
 
 Route::get('/checkout', function () {
     return view('checkout');
@@ -131,7 +127,7 @@ Route::get('/adminBrand', function () {
 Route::post('/addCat', "addOperationController@addCategory");
 Route::post('/addProd', "addOperationController@addProduct");
 Route::post('/addBrand', "addOperationController@addBrand");
-Route::get('/selectProduct', "getInfoController@getProductFromCategory");
+Route::get('/selectProduct', "getInfoController@getCategoryProduct");
 Route::post('/deleteProd', "editOperationController@deleteProduct");
 Route::post('/deleteCategory', "addOperationController@deleteCategory");
 Route::post('/deleteBrand', "deleteOperationController@deleteBrand");
@@ -152,6 +148,7 @@ Route::post('/editProd', "editController@editProduct");
 Route::post('/editBrand', "editController@editBrand");
 Route::get('/cartProduct', 'getInfoController@getCartProduct');
 
+Route::get('/singleProduct', 'getInfoController@getProductFull');
 
 Route::post('/ordering', 'getInfoController@getFullOrderInfo');
 

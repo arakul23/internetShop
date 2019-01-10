@@ -37,14 +37,13 @@
 <div class = "container">
     <div class = "row">
         <div class = "col-lg-8">
-@foreach($product[0] as $prod)
+@foreach($product as $prod)
 
     <label>{{$prod->name}}</label>
 
 @if(isset($prod->image))
     <h3><img src = "{{$prod->image}}"></h3>
     @endif
-    <p>Производитель: {{$prod->brand}}</p><br>
     <label>Описание</label>
  <p>{{$prod->description}}</p>
 <div class = "addCartButton">
@@ -64,8 +63,8 @@
 
 <div id = "singleProdProperties">
     <label>Характеристики</label>
-@foreach($product[1]['properties'] as $prod)
-    <h4>{{$prod['name']}}:{{$prod['value']}}</h4>
+@foreach($properties as $property)
+    <h4>{{$property['name']}}:{{$property['value']}}</h4>
     @endforeach
 </div>
 </div>

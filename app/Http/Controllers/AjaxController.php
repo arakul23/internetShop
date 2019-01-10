@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\product;
 use Illuminate\Foundation\Testing\Constraints\PageConstraint;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\getInfoController;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\bdController;
 class AjaxController extends getInfoController
 {
 
