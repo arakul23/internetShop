@@ -145,5 +145,29 @@ class getInfoController extends Controller
     }
 
 
+
+    public
+    function filter(Request $request)
+    {
+        $productFilter = null;
+
+
+        if ($request->table[0] == "Производитель") {
+            $table = 'brand';
+            foreach ($request->brand as $brand) {
+
+                $productFilter[] = DB::table('product')->join('brand', 'brand.id', '=', 'product.brand')->
+                select('product.*')->where("brand.name", "=", $brand)->get();
+
+            }
+
+            var_dump($productFilter);
+
+        }
+
+        return view('filterProduct', compact('productFilter'));
+
+
+    }
 }
 
