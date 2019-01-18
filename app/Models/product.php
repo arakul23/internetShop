@@ -22,6 +22,13 @@ class product extends Model
         'id',
     ];
 
+
+    function allProd()
+    {
+    $product = DB::table('product')->get();
+    return $product;
+    }
+
     function lastProduct()
     {
         $objImage = new images();
@@ -89,4 +96,60 @@ class product extends Model
         return $product;
 
     }
+
+
+function byId($id){
+
+   $result =  DB::table('product')->select("id", "name", "price", 'description', 'brand')->where("id", $id)->get();
+ 
+   return $result;
+}
+
+
+function cartProduct($request){
+
+$objImage = new images();
+$images = $objImage->images();
+    if (empty(session("product"))) {
+            $productArr = array();
+            return view('cartProduct');
+
+        } 
+        else 
+            $productArr = session("product");
+        
+        foreach ($productArr as $array) {
+            $id = $array['id'];
+            $product[] = $this->byId($id);
+
+        }
+
+         foreach ($product as $prod) {
+
+                foreach ($images as $image) {
+                if ($prod[0]->id === $image->id_product) {
+                    $prod[0]->image = $image->url;
+                }
+            }
+
+            foreach ($request->session()->get('product') as $sessionProd) {
+
+                if ($prod[0]->id == $sessionProd['id']) {
+                    $prod[0]->quantity = $sessionProd['quantity'];
+                }
+
+
+            }
+        }
+
+
+
+
+
+
+return $product;
+
+    }
+
+
 }

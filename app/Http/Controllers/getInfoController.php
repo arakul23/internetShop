@@ -53,7 +53,7 @@ class getInfoController extends Controller
     }
 
     public
-    function getProduct($pagination)
+    function getProduct($pagination) 
     {
         if ($pagination === true)
             $product = DB::table('product')->paginate(20);
@@ -104,46 +104,16 @@ class getInfoController extends Controller
         return $postOffice;
     }
 
-    public
-    function getImages()
+  
+
+    public function getCartProduct(Request $request)
     {
-        $images = DB::table('images')->select('id_product', 'url')->get();
-        return $images;
-    }
+        
+         $objProduct = new product(); 
+         $product = $objProduct->cartProduct($request);
+         
+         return view('cartProduct', compact("product"));
 
-
-    public function getCartProduct(Request $post)
-    {
-        if (empty(session("product"))) {
-            $productArr = array();
-            return view('cartProduct');
-
-        } else {
-            $productArr = session("product");
-        }
-
-        foreach ($productArr as $array) {
-            $product[] = DB::table('product')->select("id", "name", "price", 'description', 'brand')->where("id", $array['id'])->get();
-
-
-        }
-
-
-        $product = $this->mergeAttributesProduct($product);
-
-        foreach ($product as $prod) {
-
-
-            foreach ($post->session()->get('product') as $sessionProd) {
-
-                if ($prod[0]->id == $sessionProd['id']) {
-                    $prod[0]->quantity = $sessionProd['quantity'];
-                }
-
-
-                return view('cartProduct', compact("product", "countOfProd"));
-            }
-        }
     }
 
 
@@ -175,10 +145,5 @@ class getInfoController extends Controller
     }
 
 
-    public
-    function filter(Request $request)
-    {
-
-    }
 }
 
