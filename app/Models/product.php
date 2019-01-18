@@ -40,7 +40,7 @@ class product extends Model
     function categoryProduct($category)
     {
         $objImage = new images();
-        $objProperties = new properties();
+        $objProperties = new filter();
         $product = DB::table('product')->where("category", $category)->paginate(20);
         $images = $objImage->images();
         $filter = $objProperties->filter($category);
