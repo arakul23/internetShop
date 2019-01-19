@@ -17,14 +17,15 @@
     }
 </style>
 <div class="col-lg-3">
+
     @if(count($filter) > 0)
         <form action="{{action('getInfoController@filter')}}" method="post">
                     <label>Производитель</label>
 <br>
-            @foreach($filter as $key => $filt)
-        @if($filt->name == "Производитель")
-                <input type="hidden" name = "table[]" value="{{$filt->name}}">
+            <input type="hidden" name = "table[]" value="Производитель">
 
+        @foreach($filter as $key => $filt)
+        @if($filt->name == "Производитель")
                 <input type="checkbox" name="brand[]" value="{{$filt->value}}">{{$filt->value}}
                     <br>
                     @endif
@@ -37,7 +38,7 @@
         @if($filt->name == "ОЗУ")
                 <input type="hidden" name = "table[]" value="{{$filt->name}}">
 
-                <input type="checkbox" name="brand[]" value="{{$filt->value}}">{{$filt->value}}
+                <input type="checkbox" name="RAM[]" value="{{$filt->value}}">{{$filt->value}}
                     <br>
                     @endif
             @endforeach

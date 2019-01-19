@@ -53,7 +53,7 @@ class getInfoController extends Controller
     }
 
     public
-    function getProduct($pagination) 
+    function getProduct($pagination)
     {
         if ($pagination === true)
             $product = DB::table('product')->paginate(20);
@@ -104,15 +104,14 @@ class getInfoController extends Controller
         return $postOffice;
     }
 
-  
 
     public function getCartProduct(Request $request)
     {
-        
-         $objProduct = new product(); 
-         $product = $objProduct->cartProduct($request);
-         
-         return view('cartProduct', compact("product"));
+
+        $objProduct = new product();
+        $product = $objProduct->cartProduct($request);
+
+        return view('cartProduct', compact("product"));
 
     }
 
@@ -145,27 +144,39 @@ class getInfoController extends Controller
     }
 
 
-
     public
     function filter(Request $request)
     {
+
         $productFilter = null;
+        $data = DB::table('product');
+        $alias = 1;
+        foreach ($request->table as $table) {
 
+            if ($table == 'Производитель') {
+                if ($request->brand != null)
+                    foreach ($request->brand as $brand) {
 
-        if ($request->table[0] == "Производитель") {
-            $table = 'brand';
-            foreach ($request->brand as $brand) {
+                        $data = $data->join("brand as brand_$alias", "brand_$alias.id", '=', 'product.brand')->
+                        select('product.*')->where("brand_$alias.name", "=", $brand);
+                        $alias++;
+                    }
+            }
+            if ($table == 'ОЗУ') {
+                if ($request->RAM != null) {
+                    foreach ($request->RAM as $RAM) {
 
-                $productFilter[] = DB::table('product')->join('brand', 'brand.id', '=', 'product.brand')->
-                select('product.*')->where("brand.name", "=", $brand)->get();
+                        $data = $data->join('property_product', 'product.id', '=', 'id_product')->select('product.*')->
+                        where("property_product.value", "=", $RAM);
 
+                    }
+                }
             }
 
-            var_dump($productFilter);
-
         }
+        $data = $data->get();
 
-        return view('filterProduct', compact('productFilter'));
+        return view('filterProduct', compact('data'));
 
 
     }
