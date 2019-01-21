@@ -22,6 +22,9 @@ class product extends Model
         'id',
     ];
 
+    protected $primaryKey = 'id';
+
+
 
     function allProd()
     {

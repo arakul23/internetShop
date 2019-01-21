@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\product;
 use App\Models\discounts;
+use App\Models\brand;
 
 
 class getInfoController extends Controller
@@ -148,36 +149,38 @@ class getInfoController extends Controller
     function filter(Request $request)
     {
 
+
         $productFilter = null;
+        $a = array();
         $data = DB::table('product');
-        $alias = 1;
+
         foreach ($request->table as $table) {
 
             if ($table == 'Производитель') {
                 if ($request->brand != null)
-                    foreach ($request->brand as $brand) {
-
-                        $data = $data->join("brand as brand_$alias", "brand_$alias.id", '=', 'product.brand')->
-                        select('product.*')->where("brand_$alias.name", "=", $brand);
-                        $alias++;
+                    foreach ($request->brand as $brandName) {
+                        $brand = new brand();
+                        $productFilter[] = $brand->productByBrandName($brandName);
                     }
             }
-            if ($table == 'ОЗУ') {
-                if ($request->RAM != null) {
-                    foreach ($request->RAM as $RAM) {
 
-                        $data = $data->join('property_product', 'product.id', '=', 'id_product')->select('product.*')->
-                        where("property_product.value", "=", $RAM);
-
-                    }
-                }
-            }
 
         }
-        $data = $data->get();
+        foreach ($productFilter as $item) {
+            $a[] = json_decode($item);
 
-        return view('filterProduct', compact('data'));
+        }
 
+var_dump($a);
+
+
+        return view('filterProduct', compact('a'));
+
+
+    }
+
+    public function test()
+    {
 
     }
 }

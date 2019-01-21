@@ -161,4 +161,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/searchProduct', 'getInfoController@searchProduct');
 Route::get('/clearCart', 'bdController@clearCart');
+Route::get('/test', 'getInfoController@test');
 
