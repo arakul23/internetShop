@@ -24,12 +24,33 @@ class product extends Model
 
     protected $primaryKey = 'id';
 
+    public function properties()
+    {
+        return $this->belongsToMany('App\Models\properties',
+            'property_product',
+            'id_product',
+            'id_property')->withPivot('property_value');
+    }
 
+    function RAM()
+    {
+
+        $result =  Product::query()->whereHas('properties', function ($q) {
+            $q->where('property_product.property_value', '2 ГБ')->where('name', 'ОЗУ');
+        })->get();
+
+        foreach ($result as $role) {
+            echo $role;
+            //$propertyProduct = DB::table('property_product')
+        }
+
+        die();
+    }
 
     function allProd()
     {
-    $product = DB::table('product')->get();
-    return $product;
+        $product = DB::table('product')->get();
+        return $product;
     }
 
     function lastProduct()
@@ -101,35 +122,36 @@ class product extends Model
     }
 
 
-function byId($id){
+    function byId($id)
+    {
 
-   $result =  DB::table('product')->select("id", "name", "price", 'description', 'brand')->where("id", $id)->get();
- 
-   return $result;
-}
+        $result = DB::table('product')->select("id", "name", "price", 'description', 'brand')->where("id", $id)->get();
+
+        return $result;
+    }
 
 
-function cartProduct($request){
+    function cartProduct($request)
+    {
 
-$objImage = new images();
-$images = $objImage->images();
-    if (empty(session("product"))) {
+        $objImage = new images();
+        $images = $objImage->images();
+        if (empty(session("product"))) {
             $productArr = array();
             return view('cartProduct');
 
-        } 
-        else 
+        } else
             $productArr = session("product");
-        
+
         foreach ($productArr as $array) {
             $id = $array['id'];
             $product[] = $this->byId($id);
 
         }
 
-         foreach ($product as $prod) {
+        foreach ($product as $prod) {
 
-                foreach ($images as $image) {
+            foreach ($images as $image) {
                 if ($prod[0]->id === $image->id_product) {
                     $prod[0]->image = $image->url;
                 }
@@ -146,11 +168,7 @@ $images = $objImage->images();
         }
 
 
-
-
-
-
-return $product;
+        return $product;
 
     }
 

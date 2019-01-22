@@ -27,7 +27,7 @@ class brand extends Model
             $products[] =  $item['products'];
 }
 
-        return $result;
+        return $products;
     }
 
 }

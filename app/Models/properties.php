@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Models\property_product;
 
 class properties extends Model
 {
 
-    public  $rules = [
+    public $rules = [
         'characteristicName' => 'required',
     ];
 
@@ -21,9 +22,21 @@ class properties extends Model
         'id',
     ];
 
-public function filter($category){
+    public function product()
+    {
+        return $this->belongsToMany('App\Models\product',
+            'property_product',
+            'id_property',
+            'id_product')->withPivot('property_value');
+    }
 
-    return DB::table('properties')->where('category', $category)->get();
-}
+
+
+
+    public function filter($category)
+    {
+
+        return DB::table('properties')->where('category', $category)->get();
+    }
 
 }

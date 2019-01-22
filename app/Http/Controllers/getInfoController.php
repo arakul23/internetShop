@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\product;
 use App\Models\discounts;
 use App\Models\brand;
+use App\Models\property_product;
+use App\Models\properties;
 
 
 class getInfoController extends Controller
@@ -151,7 +153,6 @@ class getInfoController extends Controller
 
 
         $productFilter = null;
-        $a = array();
         $data = DB::table('product');
 
         foreach ($request->table as $table) {
@@ -160,28 +161,31 @@ class getInfoController extends Controller
                 if ($request->brand != null)
                     foreach ($request->brand as $brandName) {
                         $brand = new brand();
-                        $productFilter[] = $brand->productByBrandName($brandName);
+                        $productFilter = $brand->productByBrandName($brandName);
                     }
+            }
+
+            if ($table == 'ОЗУ') {
+                if ($request->RAM != null) {
+                    foreach ($request->RAM as $RAM) {
+
+                    }
+                }
             }
 
 
         }
-        foreach ($productFilter as $item) {
-            $a[] = json_decode($item);
-
-        }
-
-var_dump($a);
 
 
-        return view('filterProduct', compact('a'));
+        return view('filterProduct', compact('productFilter'));
 
 
     }
 
     public function test()
     {
-
+        $objProd = new product();
+        $objProd->RAM();
     }
 }
 
