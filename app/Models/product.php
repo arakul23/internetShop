@@ -174,6 +174,8 @@ class product extends Model
 
     public function sort($sortType, $category)
     {
+                $objImage = new images();
+
         $products = null;
         if($sortType == "priceDesc") {
             $products = DB::table('product')->where('category', $category)->orderBy('price', 'desc')->get();
@@ -183,6 +185,20 @@ class product extends Model
             $products = DB::table('product')->where('category', $category)->orderBy('price', 'asc')->get();
         }
 
+        if($sortType == "alphabetic"){
+            $products = DB::table('product')->where('category', $category)->orderBy('name', 'asc')->get();
+
+        }
+
+
+        $images = $objImage->images();
+        foreach ($products as $prod) {
+            foreach ($images as $image) {
+                if ($prod->id === $image->id_product) {
+                    $prod->image = $image->url;
+                }
+            }
+        }
         $json = json_encode($products);
         return $json;
 

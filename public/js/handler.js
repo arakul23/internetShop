@@ -111,7 +111,6 @@ $("#sortProducts").change(function () {
     var token = $("input[name=_token]").val();
     var sortType = $("#sortProducts").val();
     var category = $("#categoryProduct").val();
-    alert(sortType);
     $.ajax({
         type: "GET",
         url: "sortProducts",
@@ -119,9 +118,19 @@ $("#sortProducts").change(function () {
         success: function (result) {
 
             result = JSON.parse(result);
-            alert(result[0].name);
+            alert(result[2].image);
+            console.log(result);
             $(".product-form").remove();
-            $(".col-lg-9").append('<div class = "col-lg-4 product">'+result[0].name+'<div>');
+            for(var i = 0; i<result.length; i++){
+            $(".col-lg-9").append('<form action="{{url("/singleProduct")}}" class="product-form" id = "formProd'+i+'"></form>');
+            $("#formProd"+i).append('<div class = "col-lg-4 product" id="cardProd'+i+'"><h3>'+result[i].name+'</h3></div>');
+            alert(result[i].image);
+            if(result[i].image != "undefined"){
+            $("#cardProd"+i).append('<img src="'+result[i].image+'" width="200" height="200" alt="Изображение товара"><br>');
+            }
+            $("#cardProd"+i).append('<h3>'+result[i].price+' грн.</h3>');
+
+        }
         }
 
     });
