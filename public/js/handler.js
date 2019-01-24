@@ -57,13 +57,13 @@ function deleteFromCart(self) {
 }
 
 
-function showEditProductForm(self){
+function showEditProductForm(self) {
     var token = $("input[name=_token]").val();
     var idProduct = $(self).parent().find("[name='idProduct']").val();
     var result = null;
-   $("#idProductEdit").val(idProduct);
-   $("#editProduct").show('slow');
- $.ajax({
+    $("#idProductEdit").val(idProduct);
+    $("#editProduct").show('slow');
+    $.ajax({
         type: "POST",
         url: "getProductInfo",
         data: {"_token": token, "idProduct": idProduct},
@@ -73,37 +73,59 @@ function showEditProductForm(self){
             $("#prodPriceEdit").val(result[0].price);
             $("#prodCategoryEdit").val(result[0].category);
             $("#descriptionProdEdit").val(result[0].description);
-            $("#imageEdit").attr('src',result[0].image);
-            $("html, body").animate({ scrollTop: 0 }, "fast");
+            $("#imageEdit").attr('src', result[0].image);
+            $("html, body").animate({scrollTop: 0}, "fast");
         }
     });
 
 }
 
 
-
-function showEditBrandForm(self){
+function showEditBrandForm(self) {
     var token = $("input[name=_token]").val();
     var idBrand = $(self).parent().find("[name='idBrand']").val();
     var result = null;
-   $("#idBrandEdit").val(idBrand);
-   $("#editBrand").show('slow');
- $.ajax({
+    $("#idBrandEdit").val(idBrand);
+    $("#editBrand").show('slow');
+    $.ajax({
         type: "POST",
         url: "getBrandInfo",
         data: {"_token": token, "idBrand": idBrand},
         success: function (result) {
             result = JSON.parse(result);
             $("#brandNameEdit").val(result[0].name);
-            $("html, body").animate({ scrollTop: 0 }, "fast");
+            $("html, body").animate({scrollTop: 0}, "fast");
         }
     });
 
 }
 
-function addPropertySelect(){
+function addPropertySelect() {
 
     $("#propertiesNames").clone().prependTo("addProperty");
 }
+
+
+$("#sortProducts").change(function () {
+
+    var token = $("input[name=_token]").val();
+    var sortType = $("#sortProducts").val();
+    var category = $("#categoryProduct").val();
+    alert(sortType);
+    $.ajax({
+        type: "GET",
+        url: "sortProducts",
+        data: {"_token": token, "sortType": sortType, "category": category},
+        success: function (result) {
+
+            result = JSON.parse(result);
+            alert(result[0].name);
+            $(".product-form").remove();
+            $(".col-lg-9").append('<div class = "col-lg-4 product">'+result[0].name+'<div>');
+        }
+
+    });
+});
+
 
 

@@ -35,7 +35,7 @@ class product extends Model
     function RAM()
     {
 
-        $result =  Product::query()->whereHas('properties', function ($q) {
+        $result = Product::query()->whereHas('properties', function ($q) {
             $q->where('property_product.property_value', '2 ГБ')->where('name', 'ОЗУ');
         })->get();
 
@@ -169,6 +169,22 @@ class product extends Model
 
 
         return $product;
+
+    }
+
+    public function sort($sortType, $category)
+    {
+        $products = null;
+        if($sortType == "priceDesc") {
+            $products = DB::table('product')->where('category', $category)->orderBy('price', 'desc')->get();
+        }
+
+        if($sortType == "priceAsc") {
+            $products = DB::table('product')->where('category', $category)->orderBy('price', 'asc')->get();
+        }
+
+        $json = json_encode($products);
+        return $json;
 
     }
 

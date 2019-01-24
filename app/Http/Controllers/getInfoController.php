@@ -42,7 +42,7 @@ class getInfoController extends Controller
         $result = $objProduct->categoryProduct($category);
         $product = $result['product'];
         $filter = $result['filter'];
-        return view('product', compact('product', 'category', 'filter'));
+        return view('product', compact('product', 'category', 'filter', 'category'));
     }
 
 
@@ -146,6 +146,15 @@ class getInfoController extends Controller
         return view('searchPage', compact('product'));
     }
 
+    public function sortProducts(Request $request)
+    {
+
+        $sortType = $request->sortType;
+        $category = $request->category;
+        $objProd = new product();
+        $products = $objProd->sort($sortType, $category);
+        return $products;
+    }
 
     public
     function filter(Request $request)
@@ -182,7 +191,8 @@ class getInfoController extends Controller
 
     }
 
-    public function test()
+    public
+    function test()
     {
         $objProd = new product();
         $objProd->RAM();

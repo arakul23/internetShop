@@ -124,6 +124,9 @@ Route::get('/adminBrand', function () {
     return view('admin/pages/tables/brand', compact('brand'));
 });
 
+
+Route::get('/sortProducts', "getInfoController@sortProducts");
+
 Route::post('/addCat', "addOperationController@addCategory");
 Route::post('/addProd', "addOperationController@addProduct");
 Route::post('/addBrand', "addOperationController@addBrand");
