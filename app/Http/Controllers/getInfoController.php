@@ -11,15 +11,16 @@ use App\Models\brand;
 use App\Models\property_product;
 use App\Models\properties;
 use App\Models\category;
+use App\Models\deliveryMethod;
 
 class getInfoController extends Controller
 {
     private $array = [];
 
-    public function getCategory()
+    public function getCategories()
     {
-$objCategory = new category();
-$category = $objCategory->all();
+        $objCategory = new category();
+        $category = $objCategory->allCategories();
         return $category;
     }
 
@@ -59,8 +60,8 @@ $category = $objCategory->all();
     public
     function getProduct($pagination)
     {
-       $objProduct = new product();
-       $product = $objProduct->allProd(true);
+        $objProduct = new product();
+        $product = $objProduct->allProd($pagination);
         return $product;
     }
 
@@ -122,7 +123,8 @@ $category = $objCategory->all();
     public
     function getDeliveryMethod()
     {
-        $delivery = DB::table('delivery_method')->get();
+        $objDelivery = new deliveryMethod();
+        $delivery = $objDelivery->allMethods();
         return $delivery;
     }
 

@@ -92,6 +92,7 @@
                         <li><a href="{{url('adminDiscounts')}}"><i class="fa fa-circle-o"></i>Скидки</a></li>
                         <li><a href="{{url('adminProperties')}}"><i class="fa fa-circle-o"></i>Характеристики</a></li>
                         <li><a href="{{url('adminBrand')}}"><i class="fa fa-circle-o"></i>Производители</a></li>
+                        <li><a href="{{url('adminDelivery')}}"><i class="fa fa-circle-o"></i>Способы доставки</a></li>
 
                         </li>
                     </ul>

@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\product;
+use App\Models\brand;
+use App\Models\category;
+use App\Models\images;
+use App\Models\product;
 use Illuminate\Foundation\Testing\Constraints\PageConstraint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class AjaxController extends getInfoController
 {
-
 
 
     function addProduct(Request $post)
@@ -49,7 +52,7 @@ class AjaxController extends getInfoController
         //echo $json;
     }
 
-  public  function deleteFromCart(Request $post)
+    public function deleteFromCart(Request $post)
     {
         $obj = new bdController();
         $session = $post->session();
@@ -65,14 +68,14 @@ class AjaxController extends getInfoController
             }
         }
         $session->put('fullCountProd', $session->get('fullCountProd') - 1);
-        if ($session->get('product') > 0){
+        if ($session->get('product') > 0) {
             $session->put('product', array_values($session->get('product')));
         }
 
-      
+
         $prodArr = array('fullCountProd' => $session->get('fullCountProd'), 'fullPrice' => $session->get('fullPrice'));
 
-        if($session->get('product') == null){
+        if ($session->get('product') == null) {
             $obj->clearCart($post);
         }
 
@@ -80,21 +83,33 @@ class AjaxController extends getInfoController
         echo $json;
     }
 
-  public  function getProductForEdit(Request $request){
-        $obj = new getInfoController();
-        $product = DB::table('product')->where("id", $request->idProduct)->get();
-        $product = $obj->mergeImage($product);
-        $product = $obj->mergeBrand($product);
+    public function getProductForEdit(Request $request)
+    {
+        $objProducts = new product();
+        $idProduct = $request->idProduct;
+        $product = $objProducts->byId($idProduct);
         $json = json_encode($product);
         echo $json;
 
     }
 
-public function getBrandForEdit(Request $request){
+    public function getBrandForEdit(Request $request)
+    {
         $brand = DB::table('brand')->where("id", $request->idBrand)->get();
         $json = json_encode($brand);
         echo $json;
-}
+    }
+
+
+    public function getCategoryForEdit(Request $request)
+    {
+        $objCategory = new category();
+        $categoryId = $request->idCategory;
+
+        $category = $objCategory->byId($categoryId);
+        $json = json_encode($category);
+        echo $json;
+    }
 
 
 }

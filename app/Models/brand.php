@@ -19,13 +19,14 @@ class brand extends Model
     }
 
 
+
     function productByBrandName($brandName)
     {
         $products = array();
         $result = Brand::with('products')->where('name', $brandName)->get();;
         foreach ($result as $item) {
-            $products[] =  $item['products'];
-}
+            $products[] = $item['products'];
+        }
 
         return $products;
     }

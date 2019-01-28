@@ -50,9 +50,6 @@ Route::get('/logout', function () {
 });
 
 
-
-
-
 Route::get('/checkout', function () {
     return view('checkout');
 })->middleware('auth');
@@ -96,7 +93,7 @@ Route::get('/adminDiscounts', function () {
 Route::get('/adminProduct', function () {
     $obj = new getInfoController();
     $product = $obj->getProduct(true);
-    $category = $obj->getCategory();
+    $category = $obj->getCategories();
     $properties = $obj->getProperties();
     $brand = $obj->getBrand();
     return view('admin/pages/tables/product', compact('product', 'category', 'properties', 'brand'));
@@ -113,8 +110,8 @@ Route::get('/adminProperties', function () {
 
 Route::get('/adminCategory', function () {
     $obj = new getInfoController();
-    $category = $obj->getCategory();
-    return view('admin/pages/tables/category', compact( 'category'));
+    $category = $obj->getCategories();
+    return view('admin/pages/tables/category', compact('category'));
 });
 
 Route::get('/adminBrand', function () {
@@ -122,6 +119,13 @@ Route::get('/adminBrand', function () {
 
     $brand = $obj->getBrand();
     return view('admin/pages/tables/brand', compact('brand'));
+});
+
+Route::get('/adminDelivery', function () {
+    $obj = new getInfoController();
+
+    $delivery = $obj->getDeliveryMethod();
+    return view('admin/pages/tables/delivery', compact('delivery'));
 });
 
 
@@ -132,23 +136,26 @@ Route::post('/addProd', "addOperationController@addProduct");
 Route::post('/addBrand', "addOperationController@addBrand");
 Route::get('/selectProduct', "getInfoController@getCategoryProduct");
 Route::post('/deleteProd', "deleteOperationController@deleteProduct");
-Route::post('/deleteCategory', "addOperationController@deleteCategory");
 Route::post('/deleteBrand', "deleteOperationController@deleteBrand");
+Route::post('/deleteCategory', "deleteOperationController@deleteCategory");
 
 Route::post('/addToCart', "AjaxController@addProduct");
 Route::post('/getIdArray', "getInfoController@getIdArray");
 Route::post('/deleteFromCart', "AjaxController@deleteFromCart");
 Route::post('/getProductInfo', "AjaxController@getProductForEdit");
 Route::post('/getBrandInfo', "AjaxController@getBrandForEdit");
+Route::post('/getCategories', "AjaxController@getCategoryForEdit");
 
 Route::post('/addPostOffice', "addOperationController@addPostOffice");
 Route::post('/addCharacteristic', "addOperationController@addCharacteristic");
 Route::post('/addOrder', "addOperationController@addOrder");
 Route::post('/addDiscount', "addOperationController@addDiscount");
 Route::post('/addCategory', "addOperationController@addCategory");
+Route::post('/addDeliveryMethod', "addOperationController@addDelivery");
 
 Route::post('/editProd', "editController@editProduct");
 Route::post('/editBrand', "editController@editBrand");
+Route::post('/editCategory', "editController@editCategory");
 Route::get('/cartProduct', 'getInfoController@getCartProduct');
 
 Route::get('/singleProduct', 'getInfoController@getProductFull');
@@ -157,6 +164,7 @@ Route::post('/ordering', 'getInfoController@getFullOrderInfo');
 
 Route::post('/postOfficeMap', "getInfoController@getPostOffice");
 Route::post('/postOfficeForMap', "getInfoController@getPostOfficeForMap");
+Route::post('/adminDelivery', "getInfoController@getDeliveryMethods");
 
 
 Auth::routes();

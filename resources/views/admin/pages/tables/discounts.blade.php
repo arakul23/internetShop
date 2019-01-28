@@ -2,6 +2,7 @@
 @extends('layouts.headerAdmin')
  @extends('layouts.sidebarAdmin')
 @section('AdminContent')
+
 <!DOCTYPE html>
 <html>
 <body class="hold-transition skin-blue sidebar-mini">

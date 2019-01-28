@@ -32,6 +32,26 @@ class product extends Model
             'id_property')->withPivot('property_value');
     }
 
+    function brand()
+    {
+        return $this->hasOne('App\Models\brand', 'id', 'brand');
+
+    }
+
+
+    function category()
+    {
+        return $this->hasOne('App\Models\brand', 'id', 'brand');
+
+    }
+
+    function images()
+    {
+
+        return $this->hasMany('App\Models\images');
+
+    }
+
     function RAM()
     {
 
@@ -49,28 +69,12 @@ class product extends Model
 
     function allProd($pagination)
     {
-                $objImage = new images();
-                $objCategory = new category();
-        $images = $objImage->images();
 
-         if ($pagination === true)
-            $product = DB::table('product')->paginate(20);
+        if ($pagination === true)
+            $product = Product::with('brand', 'images')->paginate(20);
         else
-            $product = DB::table('product')->get();
-        $category = $objCategory->allCategories();
+            $product = Product::with('brand', 'images')->get();
 
-        foreach ($product as $prod) {
-            foreach ($category as $cat) {
-                if ($cat->id === $prod->category) {
-                    $prod->categoryName = $cat->name;
-                }
-                 foreach ($images as $image) {
-                if ($prod->id === $image->id_product) {
-                    $prod->image = $image->url;
-                }
-            }
-        }
-    }
 
         return $product;
     }
@@ -147,9 +151,9 @@ class product extends Model
     function byId($id)
     {
 
-        $result = DB::table('product')->select("id", "name", "price", 'description', 'brand')->where("id", $id)->get();
+        $product = Product::with('brand', 'images')->where('id', $id)->get();
 
-        return $result;
+        return $product;
     }
 
 
@@ -194,20 +198,20 @@ class product extends Model
 
     }
 
-     function sort($sortType, $category)
+    function sort($sortType, $category)
     {
-                $objImage = new images();
+        $objImage = new images();
 
         $products = null;
-        if($sortType == "priceDesc") {
+        if ($sortType == "priceDesc") {
             $products = DB::table('product')->where('category', $category)->orderBy('price', 'desc')->get();
         }
 
-        if($sortType == "priceAsc") {
+        if ($sortType == "priceAsc") {
             $products = DB::table('product')->where('category', $category)->orderBy('price', 'asc')->get();
         }
 
-        if($sortType == "alphabetic"){
+        if ($sortType == "alphabetic") {
             $products = DB::table('product')->where('category', $category)->orderBy('name', 'asc')->get();
 
         }

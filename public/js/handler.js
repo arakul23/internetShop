@@ -68,12 +68,18 @@ function showEditProductForm(self) {
         url: "getProductInfo",
         data: {"_token": token, "idProduct": idProduct},
         success: function (result) {
+
             result = JSON.parse(result);
+            if (result[0].images[0].url !== undefined)
+                var imageUrl = result[0].images[0].url;
+            var brandId = result[0].brand.id;
+
             $("#prodNameEdit").val(result[0].name);
             $("#prodPriceEdit").val(result[0].price);
             $("#prodCategoryEdit").val(result[0].category);
+            $("#prodBrandEdit").val(brandId);
             $("#descriptionProdEdit").val(result[0].description);
-            $("#imageEdit").attr('src', result[0].image);
+            $("#imageEdit").attr('src', imageUrl);
             $("html, body").animate({scrollTop: 0}, "fast");
         }
     });
@@ -100,6 +106,33 @@ function showEditBrandForm(self) {
 
 }
 
+
+function showEditCategoryForm(self) {
+    var token = $("input[name=_token]").val();
+    var idCategory = $(self).parent().find("[name='categoryId']").val();
+    $("#editCategory").show('slow');
+    $.ajax({
+        type: "POST",
+        url: "getCategories",
+        data: {"_token": token, "idCategory": idCategory},
+        success: function (result) {
+            result = JSON.parse(result);
+            console.log(result);
+
+            $("#idCategoryEdit").val(result[0].id);
+            $("#categoryNameEdit").val(result[0].name);
+            if (result[0].parent_id === 0) {
+                $("#parentCategory").val("no");
+            }
+            else {
+                $("#parentCategory").val(result[0].parent_id);
+            }
+            $("html, body").animate({scrollTop: 0}, "fast");
+        }
+    });
+
+}
+
 function addPropertySelect() {
 
     $("#propertiesNames").clone().prependTo("addProperty");
@@ -120,16 +153,16 @@ $("#sortProducts").change(function () {
             result = JSON.parse(result);
             console.log(result);
             $(".product-form").remove();
-            for(var i = 0; i<result.length; i++){
-            $(".col-lg-9").append('<form action="{{url("/singleProduct")}}" class="product-form" id = "formProd'+i+'"></form>');
-            $("#formProd"+i).append('<div class = "col-lg-4 product" id="cardProd'+i+'"><h3>'+result[i].name+'</h3></div>');
-            alert(result[i].image);
-            if(result[i].image != "undefined"){
-            $("#cardProd"+i).append('<img src="'+result[i].image+'" width="200" height="200" alt="Изображение товара"><br>');
-            }
-            $("#cardProd"+i).append('<h3>'+result[i].price+' грн.</h3>');
+            for (var i = 0; i < result.length; i++) {
+                $(".col-lg-9").append('<form action="{{url("/singleProduct")}}" class="product-form" id = "formProd' + i + '"></form>');
+                $("#formProd" + i).append('<div class = "col-lg-4 product" id="cardProd' + i + '"><h3>' + result[i].name + '</h3></div>');
+                alert(result[i].image);
+                if (result[i].image != "undefined") {
+                    $("#cardProd" + i).append('<img src="' + result[i].image + '" width="200" height="200" alt="Изображение товара"><br>');
+                }
+                $("#cardProd" + i).append('<h3>' + result[i].price + ' грн.</h3>');
 
-        }
+            }
         }
 
     });
