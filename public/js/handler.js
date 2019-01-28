@@ -118,7 +118,6 @@ $("#sortProducts").change(function () {
         success: function (result) {
 
             result = JSON.parse(result);
-            alert(result[2].image);
             console.log(result);
             $(".product-form").remove();
             for(var i = 0; i<result.length; i++){

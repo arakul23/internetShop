@@ -1,8 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class category extends Model
 {
@@ -13,4 +14,10 @@ class category extends Model
     protected $guarded = [
         'id',
     ];
+
+    function allCategories(){
+       $category = DB::table('category')->get();
+       return $category;
+
+    }
 }

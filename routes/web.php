@@ -131,7 +131,7 @@ Route::post('/addCat', "addOperationController@addCategory");
 Route::post('/addProd', "addOperationController@addProduct");
 Route::post('/addBrand', "addOperationController@addBrand");
 Route::get('/selectProduct', "getInfoController@getCategoryProduct");
-Route::post('/deleteProd', "editOperationController@deleteProduct");
+Route::post('/deleteProd', "deleteOperationController@deleteProduct");
 Route::post('/deleteCategory', "addOperationController@deleteCategory");
 Route::post('/deleteBrand', "deleteOperationController@deleteBrand");
 
@@ -166,3 +166,7 @@ Route::get('/searchProduct', 'getInfoController@searchProduct');
 Route::get('/clearCart', 'bdController@clearCart');
 Route::get('/test', 'getInfoController@test');
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

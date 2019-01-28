@@ -10,7 +10,7 @@ use App\Models\discounts;
 use App\Models\brand;
 use App\Models\property_product;
 use App\Models\properties;
-
+use App\Models\category;
 
 class getInfoController extends Controller
 {
@@ -18,7 +18,8 @@ class getInfoController extends Controller
 
     public function getCategory()
     {
-        $category = DB::table('category')->get();
+$objCategory = new category();
+$category = $objCategory->all();
         return $category;
     }
 
@@ -58,20 +59,8 @@ class getInfoController extends Controller
     public
     function getProduct($pagination)
     {
-        if ($pagination === true)
-            $product = DB::table('product')->paginate(20);
-        else
-            $product = DB::table('product')->get();
-        $product = $this->mergeAttributesProduct($product);
-        $category = $this->getCategory();
-
-        foreach ($product as $prod) {
-            foreach ($category as $cat) {
-                if ($cat->id === $prod->category) {
-                    $prod->categoryName = $cat->name;
-                }
-            }
-        }
+       $objProduct = new product();
+       $product = $objProduct->allProd(true);
         return $product;
     }
 

@@ -47,9 +47,31 @@ class product extends Model
         die();
     }
 
-    function allProd()
+    function allProd($pagination)
     {
-        $product = DB::table('product')->get();
+                $objImage = new images();
+                $objCategory = new category();
+        $images = $objImage->images();
+
+         if ($pagination === true)
+            $product = DB::table('product')->paginate(20);
+        else
+            $product = DB::table('product')->get();
+        $category = $objCategory->allCategories();
+
+        foreach ($product as $prod) {
+            foreach ($category as $cat) {
+                if ($cat->id === $prod->category) {
+                    $prod->categoryName = $cat->name;
+                }
+                 foreach ($images as $image) {
+                if ($prod->id === $image->id_product) {
+                    $prod->image = $image->url;
+                }
+            }
+        }
+    }
+
         return $product;
     }
 
@@ -172,7 +194,7 @@ class product extends Model
 
     }
 
-    public function sort($sortType, $category)
+     function sort($sortType, $category)
     {
                 $objImage = new images();
 

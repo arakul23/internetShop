@@ -63,8 +63,13 @@
             <label for="descriptionProd">Описание товара</label><br>
             <textarea class = "form-control" name = "descriptionProd"></textarea>
             <input type="file"  id = "nameImage" name="nameImage">
+            <a href = "#" data-toggle="collapse" data-target="#demo">Добавить характеристики</a>
+            <br>
+
+            <div id="demo" class="collapse">
+
           <div style="overflow: auto;">
-            <label>Характеристики</label><br>
+        
             <table>
             @foreach($properties as $prop)
             <tr>
@@ -73,6 +78,7 @@
             @endforeach
           </table>
           </div>
+        </div>
             <input type="submit" value="Добавить" class="btn btn-primary" style="margin:10px 0px 10px 0px">
             {!! csrf_field() !!}
         </form>

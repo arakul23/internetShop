@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\postOffice;
-use App\product;
+use App\Models\product;
 use Illuminate\Http\Request;
-use App\category;
-use App\images;
+use App\Models\category;
+use App\Models\images;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use App\properties;
-use App\orders;
-use App\ordersItems;
-use App\discounts;
-use App\brand;
-use App\property_product;
+use App\Models\properties;
+use App\Models\orders;
+use App\Models\ordersItems;
+use App\Models\discounts;
+use App\Models\brand;
+use App\Models\property_product;
 
 
 class addOperationController extends Controller
@@ -72,7 +72,7 @@ class addOperationController extends Controller
         foreach ($request->propertyName as $prop) {
         echo "id = ".$prop."<br>";
         echo $request->$prop;
-        $propertyProduct->insert(['id_product' => $lastId, 'id_property' => $prop, 'value' => $request->$prop, 'type' => 'text']);
+        $propertyProduct->insert(['id_product' => $lastId, 'id_property' => $prop, 'property_value' => $request->$prop]);
 
         
     }
