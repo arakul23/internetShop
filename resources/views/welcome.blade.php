@@ -68,11 +68,14 @@
     <label><h2>Последние товары</h2></label>
     <div class="container">
         <div class="lastProducts">
+
         @foreach($prodArr as $prod)
+
             <div class="col-lg-3">
                 <p style="text-align: center">{{$prod->name}}</p>
-                @if(isset($prod->image))
-                    <img src = '{{$prod->image}}'>
+                @if(isset($prod->images[0]))
+
+                    <img src = '{{$prod->images[0]->url}}'>
 
                 @endif
 

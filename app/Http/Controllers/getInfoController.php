@@ -43,6 +43,7 @@ class getInfoController extends Controller
         $category = $request->categoryId;
         $result = $objProduct->categoryProduct($category);
         $product = $result['product'];
+
         $filter = $result['filter'];
         return view('product', compact('product', 'category', 'filter', 'category'));
     }

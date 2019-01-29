@@ -151,15 +151,14 @@ $("#sortProducts").change(function () {
         success: function (result) {
 
             result = JSON.parse(result);
-            console.log(result);
             $(".product-form").remove();
             for (var i = 0; i < result.length; i++) {
                 $(".col-lg-9").append('<form action="{{url("/singleProduct")}}" class="product-form" id = "formProd' + i + '"></form>');
                 $("#formProd" + i).append('<div class = "col-lg-4 product" id="cardProd' + i + '"><h3>' + result[i].name + '</h3></div>');
-                alert(result[i].image);
-                if (result[i].image != "undefined") {
-                    $("#cardProd" + i).append('<img src="' + result[i].image + '" width="200" height="200" alt="Изображение товара"><br>');
+                if (typeof result[i].images[0] !== "undefined") {
+                    $("#cardProd" + i).append('<img src="' + result[i].images[0].url + '" width="200" height="200" alt="Изображение товара"><br>');
                 }
+
                 $("#cardProd" + i).append('<h3>' + result[i].price + ' грн.</h3>');
 
             }

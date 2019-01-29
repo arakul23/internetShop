@@ -81,33 +81,21 @@ class product extends Model
 
     function lastProduct()
     {
-        $objImage = new images();
-        $product = DB::table('product')->orderBy('id', 'desc')->limit(5)->get();
-        $images = $objImage->images();
-        foreach ($product as $prod) {
-            foreach ($images as $image) {
-                if ($prod->id === $image->id_product) {
-                    $prod->image = $image->url;
-                }
-            }
-        }
+        $product = Product::with('brand', 'images')->limit(5)->get();
+        $product[0]->images = json_decode($product[0]->images);
+
         return $product;
     }
 
     function categoryProduct($category)
     {
-        $objImage = new images();
+
         $objProperties = new filter();
-        $product = DB::table('product')->where("category", $category)->paginate(20);
-        $images = $objImage->images();
+        $product = Product::with('brand', 'images')->where('category', $category)->paginate(20);
+        $product[0]->images = json_decode($product[0]->images);
+
         $filter = $objProperties->filter($category);
-        foreach ($product as $prod) {
-            foreach ($images as $image) {
-                if ($prod->id === $image->id_product) {
-                    $prod->image = $image->url;
-                }
-            }
-        }
+
 
         return array("product" => $product, "filter" => $filter);
 
@@ -200,31 +188,26 @@ class product extends Model
 
     function sort($sortType, $category)
     {
-        $objImage = new images();
 
         $products = null;
         if ($sortType == "priceDesc") {
             $products = DB::table('product')->where('category', $category)->orderBy('price', 'desc')->get();
+            $products = Product::with('brand', 'images')->where('category', $category)->orderBy('price', 'desc')->get();
+
         }
 
         if ($sortType == "priceAsc") {
-            $products = DB::table('product')->where('category', $category)->orderBy('price', 'asc')->get();
+            $products = Product::with('brand', 'images')->where('category', $category)->orderBy('price', 'asc')->get();
+
         }
 
         if ($sortType == "alphabetic") {
-            $products = DB::table('product')->where('category', $category)->orderBy('name', 'asc')->get();
+            $products = Product::with('brand', 'images')->where('category', $category)->orderBy('name', 'asc')->get();
+
 
         }
 
 
-        $images = $objImage->images();
-        foreach ($products as $prod) {
-            foreach ($images as $image) {
-                if ($prod->id === $image->id_product) {
-                    $prod->image = $image->url;
-                }
-            }
-        }
         $json = json_encode($products);
         return $json;
 

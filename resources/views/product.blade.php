@@ -60,11 +60,12 @@
 <div class="col-lg-9">
 
     @foreach($product as $p)
+
         <form action="{{url('/singleProduct')}}" class="product-form">
             <div class="col-lg-4 product">
                 <h3>{{$p->name}}</h3>
-                @if(isset($p->image))
-                    <img src="{{$p->image}}" width="200" height="200"><br>
+                @if(isset($p->images[0]))
+                    <img src="{{$p->images[0]->url}}" width="200" height="200"><br>
                 @endif
                 @if(isset($p->oldPrice))
 
