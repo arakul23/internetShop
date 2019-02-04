@@ -1,18 +1,21 @@
 
 @extends('layouts.menu')
 @section('content')
-
 <style>
 .closeBtn {
     size: 29px;
 }
 </style>
-@if(!isset($product))
+
+
+
+@if(empty($product[0]))
+
 Корзина пуста
 
 @else
-<div class="container">
 
+    <div class="container">
 
     @foreach ($product as $key => $prod)
 
@@ -26,8 +29,8 @@
                 <b class = "pull-right">{{$prod[0]->quantity}}</b>
            
         </div>
-            @if(isset($prod[0]->image))
-            <p><img src="{{$prod[0]->image}}" width="200" height="200"></p>
+            @if(isset($prod[0]->images[0]))
+            <p><img src="{{$prod[0]->images[0]->url}}" width="200" height="200"></p>
             @endif
             <div></div>
             <p align="inherit" value="{{$prod[0]->price}}" id="prodCount">Цена: {{$prod[0]->price}}

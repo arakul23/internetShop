@@ -70,7 +70,8 @@ function showEditProductForm(self) {
         success: function (result) {
 
             result = JSON.parse(result);
-            if (result[0].images[0].url !== undefined)
+            console.log(result);
+            if (result[0].images.length > 0)
                 var imageUrl = result[0].images[0].url;
             var brandId = result[0].brand.id;
 
@@ -79,7 +80,12 @@ function showEditProductForm(self) {
             $("#prodCategoryEdit").val(result[0].category);
             $("#prodBrandEdit").val(brandId);
             $("#descriptionProdEdit").val(result[0].description);
-            $("#imageEdit").attr('src', imageUrl);
+            alert(imageUrl);
+            if (imageUrl !== undefined)
+                $("#imageEdit").attr('src', imageUrl);
+            else
+                $("#imageEdit").attr('src', "#");
+
             $("html, body").animate({scrollTop: 0}, "fast");
         }
     });

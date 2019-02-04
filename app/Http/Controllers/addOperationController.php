@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address_deliveries;
 use App\Models\deliveryMethod;
 use App\postOffice;
 use App\Models\product;
@@ -36,30 +37,11 @@ class addOperationController extends Controller
 
     public function addProduct(Request $request)
     {
-        $file = Input::file('nameImage');
-
-        if (!empty($file)) {
-            $oldPath = $file->getPathName();
-            $fileName = $file->getClientOriginalName();
-
-            $newPath = "..\public\img\\" . $fileName;
-        }
         $product = new product();
-        $image = new images();
-        $product->name = $request->prodName;
-        $product->price = $request->prodPrice;
-        $product->category = $request->prodCategory;
-        $product->brand = $request->prodBrand;
-        $product->description = $request->descriptionProd;
-        $product->save();
-
-        $lastId = DB::getPdo()->lastInsertId();
-        if (!empty($file)) {
-            $image->id_product = $lastId;
-            move_uploaded_file($oldPath, $newPath);
-            $image->url = "..\public\img\\" . $fileName;
-            $image->save();
-        }
+        $lastId = $product->add($request); // Method return last insert id for image table
+        $file = Input::file('nameImage');
+        $images = new images();
+        $images->add($images, $file, $lastId);
         $this->addPropertiesProduct($request, $lastId);
         return redirect('adminProduct');
 
@@ -70,12 +52,11 @@ class addOperationController extends Controller
     public function addPropertiesProduct($request, $lastId)
     {
         $propertyProduct = new property_product();
-        foreach ($request->propertyName as $prop) {
-            echo "id = " . $prop . "<br>";
-            echo $request->$prop;
-            $propertyProduct->insert(['id_product' => $lastId, 'id_property' => $prop, 'property_value' => $request->$prop]);
+        if (isset($request->propertyName)) {
+            foreach ($request->propertyName as $prop) {
+                $propertyProduct->insert(['id_product' => $lastId, 'id_property' => $prop, 'property_value' => $request->$prop]);
 
-
+            }
         }
     }
 
@@ -91,7 +72,6 @@ class addOperationController extends Controller
         $postOffice->working_time = $request->postOfficeTimeWorking;
         $postOffice->save();
         return redirect('add');
-
 
     }
 
@@ -124,17 +104,25 @@ class addOperationController extends Controller
         $name = $request->userName;
         $phoneNumber = $request->userPhoneNumber;
         $delivery = $request->delivery;
+        $address = $request->addressOrder;
 
         $orders->name = $name;
         $orders->phoneNumber = $phoneNumber;
         $orders->fullPrice = $fullPrice;
         $orders->delivery = $delivery;
+        $orders->address = $address;
         $orders->save();
         $orderId = DB::getPdo()->lastInsertId();
         foreach ($cartProd as $cp) {
             $itemsOrders->insert(['order_id' => $orderId, 'item_id' => $cp['id'], 'quantity' => $cp['quantity']]);
 
         }
+
+        $request->session()->forget(["fullPrice", "fullCountProd", "product"]);
+        return redirect('cartProduct');
+
+
+
 
 
     }
@@ -154,6 +142,12 @@ class addOperationController extends Controller
     public function addDelivery(Request $request)
     {
         $objDelivery = new deliveryMethod();
+        $objDelivery->add($request);
+    }
+
+    public function addDeliveryAddress(Request $request)
+    {
+        $objDelivery = new Address_deliveries();
         $objDelivery->add($request);
     }
 

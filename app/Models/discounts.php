@@ -9,22 +9,25 @@ class discounts extends Model
 {
     public $timestamps = false;
 
-    public function discounts(){
+
+    function products()
+    {
+
+        return $this->belongsTo('App\Models\product', 'product_id', 'id');
+
+    }
+
+    function images()
+    {
+
+        return $this->belongsTo('App\Models\images', 'product_id', 'product_id');
+
+    }
+
+    function discountProds()
+    {
         $today = date('Y-m-d');
-        $objImages = new images();
-        $images = $objImages->images();
-        $product = DB::table('product')->join('discounts', 'product.id', '=', 'id_product')->
-        select('product.*', 'discounts.percent', 'discounts.id', 'discounts.id_product')->where('discounts.dateStart', '<=', $today)->where('discounts.dateFinish', '>=', $today)->get();
-        foreach ($product as $prod) {
-            foreach ($images as $img){
-                if($prod->id == $img->id_product)
-                    $prod->image = $img->url;
-            }
-            $prod->discountPrice = $prod->price - (($prod->price * ($prod->percent / 100)));
-        }
-
-
-        return $product;
+        return Discounts::with('products', 'images')->where('dateStart', '<=', $today)->where('dateFinish', '>=', $today)->get();
 
     }
 

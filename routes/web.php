@@ -67,12 +67,14 @@ Route::get('/admin', function () {
 })->name("admin");
 
 Route::get('/discounts', function () {
-    $discounts = new getInfoController();
-    $product = $discounts->getDiscounts();
-    return view('discounts', compact('product'));
+    $objProducts = new getInfoController();
+    $discountProds = $objProducts->getDiscountProducts();
+    return view('discounts', compact('discountProds'));
 
 
 });
+
+
 
 Route::get('/adminDiscounts', function () {
     $obj = new getInfoController();
@@ -89,6 +91,15 @@ Route::get('/adminDiscounts', function () {
     return view('admin/pages/tables/discounts', compact('discounts', 'product'));
 });
 
+
+Route::get('/adminDeliveryAddress', function (){
+    $obj = new getInfoController();
+    $arr = $obj->getAddressesDelivery();
+    $addresses = $arr[0];
+    $deliveryMethods  = $arr[1];
+    return view('admin/pages/tables/address_delivery', compact('addresses', 'deliveryMethods'));
+
+});
 
 Route::get('/adminProduct', function () {
     $obj = new getInfoController();
@@ -152,14 +163,18 @@ Route::post('/addOrder', "addOperationController@addOrder");
 Route::post('/addDiscount', "addOperationController@addDiscount");
 Route::post('/addCategory', "addOperationController@addCategory");
 Route::post('/addDeliveryMethod', "addOperationController@addDelivery");
+Route::post('/addDeliveryAddress', "addOperationController@addDeliveryAddress");
 
 Route::post('/editProd', "editController@editProduct");
 Route::post('/editBrand', "editController@editBrand");
 Route::post('/editCategory', "editController@editCategory");
 Route::get('/cartProduct', 'getInfoController@getCartProduct');
 
-Route::get('/singleProduct', 'getInfoController@getProductFull');
-
+Route::get('/singleProduct', function (Request $request){
+    $obj = new getInfoController();
+    $product = $obj->getProductById($request);
+    return view('single-product', compact('product'));
+});
 Route::post('/ordering', 'getInfoController@getFullOrderInfo');
 
 Route::post('/postOfficeMap', "getInfoController@getPostOffice");

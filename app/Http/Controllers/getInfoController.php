@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-//TODO Реализовать фильтр для разных категорий товаров
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\product;
 use App\Models\discounts;
 use App\Models\brand;
-use App\Models\property_product;
-use App\Models\properties;
 use App\Models\category;
 use App\Models\deliveryMethod;
+use App\Models\Address_deliveries;
 
 class getInfoController extends Controller
 {
@@ -67,6 +65,29 @@ class getInfoController extends Controller
     }
 
     public
+    function getProductById($request)
+    {
+        $objProduct = new Product();
+        $id = $request->idVal;
+        $product = $objProduct->byId($id);
+
+        return $product;
+    }
+
+    public function getDiscountProducts()
+    {
+
+        $objProduct = new discounts();
+        $discountProds = $objProduct->discountProds();
+
+        foreach ($discountProds as $discountProd) {
+
+            $discountProd['products']['discountPrice'] = $discountProd['products']['price'] - (($discountProd['products']['price'] * ($discountProds[0]->percent / 100)));
+        }
+        return $discountProds;
+    }
+
+    public
     function getLastProduct()
     {
         $objProduct = new product();
@@ -104,7 +125,6 @@ class getInfoController extends Controller
 
         $objProduct = new product();
         $product = $objProduct->cartProduct($request);
-
         return view('cartProduct', compact("product"));
 
     }
@@ -118,6 +138,16 @@ class getInfoController extends Controller
         $delivery = $this->getDeliveryMethod();
         return view("ordering", compact('cartProd', 'fullPrice', 'delivery'));
 
+    }
+
+    public function getAddressesDelivery()
+    {
+
+        $objAddressesDelivery = new Address_deliveries();
+        $objDeliveryMethods = new deliveryMethod();
+        $deliveryMethods = $objDeliveryMethods->allMethods();
+        $addresses = $objAddressesDelivery->allAddresses();
+        return array($addresses, $deliveryMethods);
     }
 
 

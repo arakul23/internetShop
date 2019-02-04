@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class product extends Model
+class Product extends Model
 {
 
     public $rules = [
@@ -52,6 +52,14 @@ class product extends Model
 
     }
 
+
+    function discounts()
+    {
+
+        return $this->hasMany('App\Models\discounts');
+
+    }
+
     function RAM()
     {
 
@@ -71,9 +79,9 @@ class product extends Model
     {
 
         if ($pagination === true)
-            $product = Product::with('brand', 'images')->paginate(20);
+            $product = Product::with('brand', 'images', 'discounts')->paginate(20);
         else
-            $product = Product::with('brand', 'images')->get();
+            $product = Product::with('brand', 'images', 'discounts')->get();
 
 
         return $product;
@@ -101,18 +109,16 @@ class product extends Model
 
     }
 
-    function fullInfo($request)
+    function discountProds()
     {
 
-        $id = $request->idVal;
+       return Product::whereHas('discounts', function ($query) {
+           $today = date('Y-m-d');
+           $query->where('dateStart', '<=', $today)->where('dateFinish', '>=', $today);
+        })->get();
 
-        $product = DB::table('product')->select("id", "name", "price", 'description')->where("id", $id)->get();
-
-        $char = DB::table('product')->join('property_product', 'product.id', '=', 'id_product')->join('properties', 'properties.id', '=', 'property_product.id_property')->
-        select('properties.name', 'property_product.value')->where("product.id", $id)->get();
-        $properties = json_decode($char, true);
-        return array("product" => $product, "properties" => $properties);
     }
+
 
 
     function search($request)
@@ -139,7 +145,7 @@ class product extends Model
     function byId($id)
     {
 
-        $product = Product::with('brand', 'images')->where('id', $id)->get();
+        $product = $this->with('brand', 'images','properties')->where('id', $id)->get();
 
         return $product;
     }
@@ -148,42 +154,30 @@ class product extends Model
     function cartProduct($request)
     {
 
-        $objImage = new images();
-        $images = $objImage->images();
-        if (empty(session("product"))) {
-            $productArr = array();
-            return view('cartProduct');
+        if (session()->has('product')) {
 
-        } else
             $productArr = session("product");
 
-        foreach ($productArr as $array) {
-            $id = $array['id'];
-            $product[] = $this->byId($id);
+            foreach ($productArr as $array) {
+                $id = $array['id'];
+                $product[] = $this->byId($id);
 
-        }
+            }
 
-        foreach ($product as $prod) {
+            foreach ($product as $prod) {
 
-            foreach ($images as $image) {
-                if ($prod[0]->id === $image->id_product) {
-                    $prod[0]->image = $image->url;
+                foreach ($request->session()->get('product') as $sessionProd) {
+
+                    if ($prod[0]->id == $sessionProd['id']) {
+                        $prod[0]->quantity = $sessionProd['quantity'];
+                    }
+
                 }
             }
 
-            foreach ($request->session()->get('product') as $sessionProd) {
+            return $product;
 
-                if ($prod[0]->id == $sessionProd['id']) {
-                    $prod[0]->quantity = $sessionProd['quantity'];
-                }
-
-
-            }
         }
-
-
-        return $product;
-
     }
 
     function sort($sortType, $category)
@@ -210,6 +204,19 @@ class product extends Model
 
         $json = json_encode($products);
         return $json;
+
+    }
+
+    function add($request){
+        $product = new product();
+        $product->name = $request->prodName;
+        $product->price = $request->prodPrice;
+        $product->category = $request->prodCategory;
+        $product->brand = $request->prodBrand;
+        $product->description = $request->descriptionProd;
+        $product->save();
+        return DB::getPdo()->lastInsertId();
+
 
     }
 

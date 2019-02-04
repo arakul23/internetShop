@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\category;
+use App\Models\images;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,9 @@ class editController extends Controller
     public function editImage($productId, $newPath)
     {
 
-        DB::table('images')->where('id_product', '=', $productId)->update(['url' => $newPath]);
+        $obj = new images();
+        $obj->edit($productId, $newPath);
+
     }
 
 

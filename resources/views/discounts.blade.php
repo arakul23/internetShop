@@ -50,21 +50,21 @@
         <div class="zigzag-bottom"></div>
         <div class="container">
             <div class="row">
-                @foreach($product as $prod)
+                @foreach($discountProds as $prod)
                 <div class="col-md-3 col-sm-6">
                     <div class="single-shop-product">
                         <div class="product-upper">
                          <form action="{{url('/singleProduct')}}" class="product-form">
-                            <img src="{{$prod->image}}" alt="">
+                            <img src="{{$prod->images['url']}}" alt="">
                         </div>
-                        <h2>{{$prod->name}}</h2>
+                        <h2>{{$prod->products->name}}</h2>
                         <div class="product-carousel-price">
-                            <ins>{{$prod->discountPrice}} грн.</ins> <del>{{$prod->price}} грн.</del> <ins>{{$prod->percent}}%</ins>
+                            <ins>{{$prod->products->discountPrice}} грн.</ins> <del>{{$prod->products->price}} грн.</del> <ins>{{$prod->percent}}%</ins>
                         </div>  
                         
                         <div class="product-option-shop">
-                            <input type="hidden" name="idVal" value="{{$prod->id}}">
-                            <input type="hidden" name="priceVal" value="{{$prod->discountPrice}}">
+                            <input type="hidden" name="idVal" value="{{$prod->products->id}}">
+                            <input type="hidden" name="priceVal" value="{{$prod->products->discountPrice}}">
                             <button type="button" onclick="addProductInCart(this)">Добавить в корзину</button>
 
                         </div>                       

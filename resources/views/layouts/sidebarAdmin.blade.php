@@ -93,7 +93,7 @@
                         <li><a href="{{url('adminProperties')}}"><i class="fa fa-circle-o"></i>Характеристики</a></li>
                         <li><a href="{{url('adminBrand')}}"><i class="fa fa-circle-o"></i>Производители</a></li>
                         <li><a href="{{url('adminDelivery')}}"><i class="fa fa-circle-o"></i>Способы доставки</a></li>
-
+                        <li><a href="{{url('adminDeliveryAddress')}}"><i class="fa fa-circle-o"></i>Адреса пунктов выдачи</a></li>
                         </li>
                     </ul>
                 </li>
