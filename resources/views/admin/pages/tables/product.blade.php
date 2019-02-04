@@ -409,6 +409,8 @@
 <script src="../resources/views/admin/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../resources/views/admin/dist/js/demo.js"></script>
+<script src="../../../public/js/handler.js"></script>
+
 </body>
 </html>
 @stop
