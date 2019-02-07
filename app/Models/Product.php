@@ -123,20 +123,9 @@ class Product extends Model
 
     function search($request)
     {
-        $objImage = new images();
 
         $query = $request->searchQuery;
-        $product = DB::table('product')->where('name', 'LIKE', '%' . $query . '%')->get();
-        $images = $objImage->images();
-        foreach ($product as $prod) {
-            foreach ($images as $image) {
-                if ($prod->id === $image->id_product) {
-                    $prod->image = $image->url;
-                }
-            }
-
-        }
-
+        $product = Product::with('brand', 'images', 'discounts')->where('name', 'LIKE', '%' . $query . '%')->get();
         return $product;
 
     }

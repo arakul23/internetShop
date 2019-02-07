@@ -53,6 +53,11 @@
                             <label for="address">Адрес</label><br>
                             <input id = "address" name = "address" class="form-control">
 
+                            <label for="latitude">Широта</label><br>
+                            <input id = "latitude" name = "latitude" class="form-control">
+
+                            <label for="longitude">Долгота</label><br>
+                            <input id = "longitude" name = "longitude" class="form-control">
                             <input type="submit" value="Добавить" class="btn btn-primary" style = "margin:20px 0px">
                             {{ csrf_field() }}
                         </form>

@@ -91,7 +91,11 @@
                         <div id="editProduct" style="display: none">
                             <form action={{url('/editProd')}} method="post" class="col-lg-4 col-md-offset-2"
                                   id="editProduct" enctype="multipart/form-data">
+                                <button type="button" class="close pull-right" id = "closeEditProductForm" aria-label="Закрыть">
+                                    <span aria-hidden="true">&times;</span>
+                                </button></label><br>
                                 <label><h3>Редактировать товар</h3></label><br>
+
 
                                 <label for="prodName">Название товара</label><br>
                                 <input name="prodNameEdit" id="prodNameEdit" class="form-control input-sm" required><br>

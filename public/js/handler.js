@@ -70,7 +70,6 @@ function showEditProductForm(self) {
         success: function (result) {
 
             result = JSON.parse(result);
-            console.log(result);
             if (result[0].images.length > 0)
                 var imageUrl = result[0].images[0].url;
             var brandId = result[0].brand.id;
@@ -80,7 +79,6 @@ function showEditProductForm(self) {
             $("#prodCategoryEdit").val(result[0].category);
             $("#prodBrandEdit").val(brandId);
             $("#descriptionProdEdit").val(result[0].description);
-            alert(imageUrl);
             if (imageUrl !== undefined)
                 $("#imageEdit").attr('src', imageUrl);
             else
@@ -123,7 +121,6 @@ function showEditCategoryForm(self) {
         data: {"_token": token, "idCategory": idCategory},
         success: function (result) {
             result = JSON.parse(result);
-            console.log(result);
 
             $("#idCategoryEdit").val(result[0].id);
             $("#categoryNameEdit").val(result[0].name);
@@ -143,6 +140,11 @@ function addPropertySelect() {
 
     $("#propertiesNames").clone().prependTo("addProperty");
 }
+
+
+$("#closeEditProductForm").click(function () {
+$("#editProduct").hide();
+});
 
 
 $("#sortProducts").change(function () {
