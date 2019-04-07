@@ -48,6 +48,7 @@
                             <label for="prodCategory">Категория товара</label><br>
                             <select name="prodCategory" id="prodCategory" class="form-control" required>
                                 <option value="no">Нет</option>
+
                                 @foreach($category as $cat)
                                     <option name={{$cat->name}} value= {{$cat->id}}>{{$cat->name}}</option>
                                 @endforeach
@@ -127,7 +128,6 @@
                                 {{ csrf_field() }}
                             </form>
                         </div>
-
                         <!-- /.box-header -->
                         <div class="box-body">
                             <table class="table table-bordered">
@@ -144,7 +144,7 @@
                                         <td>{{$prod->id}}</td>
                                         <td>{{$prod->name}}</td>
                                         <td>
-                                            {{$prod->categoryName}}
+                                            {{$prod->category}}
                                         </td>
                                         <td>
                                             {{$prod->brand}}

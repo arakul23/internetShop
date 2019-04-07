@@ -74,9 +74,9 @@
                   @foreach($discounts as $disc)
                 <tr>
                   <td>{{$disc->id}}</td>
-                  <td>{{$disc->name}}</td>
-                  <td>{{$disc->id_product}}</td>
-                  <td>{{$disc->categoryName}}</td>
+                  <td>{{$disc->products->name}}</td>
+                  <td>{{$disc->product_id}}</td>
+                  <td>{{$disc->products->category}}</td>
                   <td>{{$disc->percent}}%</td>
                   <td>{{$disc->price}} грн.</td>
                   <td>{{$disc->discountPrice}} грн.</td>

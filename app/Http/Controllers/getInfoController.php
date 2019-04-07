@@ -52,7 +52,7 @@ class getInfoController extends Controller
     {
 
         $objDiscount = new discounts();
-        $productDiscount = $objDiscount->discounts();
+        $productDiscount = $objDiscount->discountProds();
         return $productDiscount;
     }
 

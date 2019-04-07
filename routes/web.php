@@ -80,7 +80,7 @@ Route::get('/adminDiscounts', function () {
     $obj = new getInfoController();
     $product = $obj->getProduct(false);
     $discounts = $obj->getDiscounts();
-    $category = $obj->getCategory();
+    $category = $obj->getCategories();
     foreach ($discounts as $disc) {
         foreach ($category as $cat) {
             if ($disc->category === $cat->id) {
@@ -107,13 +107,15 @@ Route::get('/adminProduct', function () {
     $category = $obj->getCategories();
     $properties = $obj->getProperties();
     $brand = $obj->getBrand();
+
+
     return view('admin/pages/tables/product', compact('product', 'category', 'properties', 'brand'));
 });
 
 
 Route::get('/adminProperties', function () {
     $obj = new getInfoController();
-    $category = $obj->getCategory();
+    $category = $obj->getCategories();
     $properties = $obj->getProperties();
     return view('admin/pages/tables/properties', compact('properties', 'category'));
 });

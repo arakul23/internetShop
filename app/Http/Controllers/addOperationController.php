@@ -79,7 +79,6 @@ class addOperationController extends Controller
     {
         $properties = new properties();
         $properties->name = $request->characteristicName;
-        $properties->category = $request->categoryProperty;
         $properties->save();
         return redirect('adminProperties');
     }
@@ -130,7 +129,7 @@ class addOperationController extends Controller
     public function addDiscount(Request $request)
     {
         $discounts = new discounts();
-        $discounts->id_product = $request->productId;
+        $discounts->product_id = $request->productId;
         $discounts->percent = $request->discountPercent;
         $discounts->dateStart = $request->dateStart;
         $discounts->dateFinish = $request->dateFinish;
