@@ -75,6 +75,11 @@ Route::get('/discounts', function () {
 });
 
 
+Route::get('/payment', function (Request $request) {
+    $obj = new getInfoController();
+    $obj->payment($request);
+});
+
 
 Route::get('/adminDiscounts', function () {
     $obj = new getInfoController();
@@ -92,11 +97,11 @@ Route::get('/adminDiscounts', function () {
 });
 
 
-Route::get('/adminDeliveryAddress', function (){
+Route::get('/adminDeliveryAddress', function () {
     $obj = new getInfoController();
     $arr = $obj->getAddressesDelivery();
     $addresses = $arr[0];
-    $deliveryMethods  = $arr[1];
+    $deliveryMethods = $arr[1];
     return view('admin/pages/tables/address_delivery', compact('addresses', 'deliveryMethods'));
 
 });
@@ -161,7 +166,17 @@ Route::post('/getCategories', "AjaxController@getCategoryForEdit");
 
 Route::post('/addPostOffice', "addOperationController@addPostOffice");
 Route::post('/addCharacteristic', "addOperationController@addCharacteristic");
-Route::post('/addOrder', "addOperationController@addOrder");
+Route::post('/addOrder', function (Request $request) {
+    $obj = new \App\Http\Controllers\addOperationController();
+    $obj->addOrder($request);
+    if ($request->payment === 'paypal') {
+        $objInfoController = new getInfoController();
+        $objInfoController->payment($request);
+    } else {
+        $request->session()->forget(["fullPrice", "fullCountProd", "product"]);
+        return redirect('cartProduct');
+    }
+});
 Route::post('/addDiscount', "addOperationController@addDiscount");
 Route::post('/addCategory', "addOperationController@addCategory");
 Route::post('/addDeliveryMethod', "addOperationController@addDelivery");
@@ -172,7 +187,7 @@ Route::post('/editBrand', "editController@editBrand");
 Route::post('/editCategory', "editController@editCategory");
 Route::get('/cartProduct', 'getInfoController@getCartProduct');
 
-Route::get('/singleProduct', function (Request $request){
+Route::get('/singleProduct', function (Request $request) {
     $obj = new getInfoController();
     $product = $obj->getProductById($request);
     return view('single-product', compact('product'));
@@ -191,7 +206,11 @@ Route::get('/searchProduct', 'getInfoController@searchProduct');
 Route::get('/clearCart', 'bdController@clearCart');
 Route::get('/test', 'getInfoController@test');
 
-
+Route::get('/cabinet', function () {
+    $obj = new getInfoController();
+    $items = $obj->getUserOrders();
+    return view('user_cabinet', compact('items'));
+});
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

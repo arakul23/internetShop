@@ -34,6 +34,12 @@ img {
     overflow: hidden
 }
 
+
+.prod_img{
+    max-width: 200px;
+    max-height: 200px;
+}
+
 h1,
 h2,
 h3,

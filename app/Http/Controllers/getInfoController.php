@@ -46,6 +46,68 @@ class getInfoController extends Controller
         return view('product', compact('product', 'category', 'filter', 'category'));
     }
 
+    public function payment(Request $request): void
+    {
+        $price = round($request->session()->get('fullPrice') / 27, 2);
+
+
+        $paypalEmail = "paypaybusinessaccount@email.com";
+        $paypalURL = "https://www.paypal.com/cgi-bin/webscr";
+        $itemName = "Upgrade account";
+        $returnUrl = "full-url-for-page-where-user-returns-if-pays";
+        $cancelUrl = "full-url-for-page-where-user-returns-if-cancels-payment";
+        $notifyUrl = "full-url-where-the-ipn-returns";
+        $querystring = 'cmd=_notify-validate';
+
+        $querystring .= "?business=" . urlencode($paypalEmail) . "&";
+
+//Добавляем сумму и валюту
+        $querystring .= "currency_code=" . urlencode('USD') . "&";
+        $querystring .= "lc=" . urlencode('US') . "&";
+
+//остальные данные
+        $querystring .= "bn=" . urlencode('YourBussiness_BuyNow_WPS_US') . "&";
+        $querystring .= "no_note=" . urlencode('1') . "&";
+        $querystring .= "cmd=" . urlencode('_xclick') . "&";
+
+//ид пользователя – чтоб знати при ответе Paypal кто заплатил
+
+        $querystring .= "item_name=" . urlencode($itemName) . "&";
+        $querystring .= "amount=" . urlencode($price) . "&";
+
+//мы не используем этот код – но он нужен, если отправляются какие-то данные из формы
+        /* foreach ($_POST as $key => $value) {
+            $value = urlencode(stripslashes($value));
+            $querystring .= "$key=$value&";
+        } */
+
+//Добавление адресов возврата
+        $querystring .= "return=" . urlencode(stripslashes($returnUrl)) . "&";
+        $querystring .= "cancel_return=" . urlencode(stripslashes($cancelUrl)) . "&";
+        $querystring .= "notify_url=" . urlencode($notifyUrl);
+        header('Location:' . $paypalURL . $querystring);
+        $request->session()->forget(["fullPrice", "fullCountProd", "product"]);
+        exit();
+    }
+
+    public function getUserOrders()
+    {
+        $items = [];
+        $ordersItems = [];
+        $orders = DB::table('orders')->select('id')->where('email', Auth()->user()->email)->get();
+
+        foreach ($orders as $key => $order) {
+            $ordersItems = DB::table('orders_items')->select('item_id')->where('order_id', $orders[$key]->id)->get();
+
+        }
+        foreach ($ordersItems as $key => $item) {
+
+            $items[] = Product::with('images')->where('id', $item->item_id)->get();
+        }
+
+        return $items;
+
+    }
 
     public
     function getDiscounts()

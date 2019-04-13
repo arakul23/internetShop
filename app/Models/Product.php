@@ -95,6 +95,9 @@ class Product extends Model
         return $product;
     }
 
+
+
+
     function categoryProduct($category)
     {
 

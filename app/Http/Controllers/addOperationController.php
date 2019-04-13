@@ -101,11 +101,14 @@ class addOperationController extends Controller
         $cartProd = $session->get('product');
         $fullPrice = $session->get('fullPrice');
         $name = $request->userName;
+        $email = $request->userEmail;
+
         $phoneNumber = $request->userPhoneNumber;
         $delivery = $request->delivery;
         $address = $request->addressOrder;
 
         $orders->name = $name;
+        $orders->email = $email;
         $orders->phoneNumber = $phoneNumber;
         $orders->fullPrice = $fullPrice;
         $orders->delivery = $delivery;
@@ -117,8 +120,8 @@ class addOperationController extends Controller
 
         }
 
-        $request->session()->forget(["fullPrice", "fullCountProd", "product"]);
-        return redirect('cartProduct');
+        //$request->session()->forget(["fullPrice", "fullCountProd", "product"]);
+        //return redirect('cartProduct');
 
 
 

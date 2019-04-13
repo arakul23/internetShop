@@ -22,10 +22,25 @@
                 <label>Введите ФИО </label>
                 <input name="userName" placeholder="ФИО" class="form-control input-sm" minlength="15" maxlength="40"
                        required>
+                <label>Введите Email </label>
+                @if(Auth()->user())
+                    <input name="userEmail" placeholder="Email" class="form-control input-sm" minlength="10"
+                           maxlength="50"
+                           value="{{Auth()->user()->email}}" required>
+                @else
+                    <input name="userEmail" placeholder="Email" class="form-control input-sm" minlength="10"
+                           maxlength="50" required>
+                @endif
 
                 <label>Введите номер телефона</label>
                 <input name="userPhoneNumber" placeholder="Номер телефона" class="form-control input-sm" minlength="10"
                        maxlength="13" required>
+
+                <label>Выберите способ оплаты</label>
+                <select name='payment' class="form-control">
+                    <option value="COD">Наложенный платёж</option>
+                    <option value="paypal">PayPal</option>
+                </select>
                 <label>Выберите способ доставки</label>
 
                 <select name='delivery' class="form-control">
@@ -43,7 +58,7 @@
 
         </div>
         <style>
-            #map{
+            #map {
                 height: 400px;
                 width: 400px;
             }
